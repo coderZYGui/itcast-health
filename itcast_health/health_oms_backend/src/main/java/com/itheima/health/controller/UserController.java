@@ -26,6 +26,7 @@ public class UserController {
         try {
             if (userService.login(username, password)){
                 // 会返回一个JSON, 对象转JSON,在配置文件中配置了fastJson
+                // 因为 @RestController = @Controller + @ResponseBody(将Controller返回的对象转为JSON数据)
                 return new Result(true, MessageConst.ACTION_SUCCESS, username);
             }
         } catch (Exception e){

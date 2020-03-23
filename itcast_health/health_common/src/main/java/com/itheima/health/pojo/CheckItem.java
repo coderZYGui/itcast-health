@@ -1,10 +1,13 @@
 package com.itheima.health.pojo;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 
 /**
  * 检查项
  */
+@ToString
 public class CheckItem implements Serializable {
     private Integer id;//主键
     private String code;//项目编码

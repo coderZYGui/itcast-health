@@ -242,7 +242,7 @@
                     if (valid) {
                         console.log("验证成功!");
 
-                        // 打印输入的表单时护具
+                        // 打印输入的表单时数据
                         console.log(this.formData);
                         // 填写完表单数据后,提交请求, args: url, 表单数据formData
                         axios.post("http://localhost:9002/checkitem/add.do", this.formData)
@@ -263,7 +263,7 @@
                                     this.$message.error(response.data.message);
                                 }
                             }).finally(()=>{
-                                console.log("必须执行的代码")
+                                console.log("必须执行的代码");
                                 this.findPage();
                             })
 
