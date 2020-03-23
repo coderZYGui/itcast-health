@@ -7,4 +7,11 @@
         (#{code},#{name},#{sex},#{age},#{price},#{type},#{attention},#{remark})
     </insert>
 
+    <select id="selectByCondition" parameterType="string" resultType="com.itheima.health.pojo.CheckItem">
+        SELECT * FROM t_checkitem
+        <if test="queryString != null and queryString.length > 0">
+            WHERE code LIKE concat ('%', #{queryString}, '%') OR name LIKE concat ('%', #{queryString}, '%')
+        </if>
+    </select>
+
 </mapper>

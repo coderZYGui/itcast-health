@@ -213,6 +213,7 @@
     var vue = new Vue({
         el: '#app',
         data: {
+            backed_url: "http://localhost:9002",
             pagination: {//分页相关模型数据
                 currentPage: 1,//当前页码
                 pageSize: 10,//每页显示的记录数
@@ -230,6 +231,7 @@
         },
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
+            this.findPage();
         },
         methods: {
             //编辑
@@ -274,6 +276,24 @@
             },
             //分页查询
             findPage() {
+                // 如果有查询条件,设置当前页码必须为1
+                if (this.pagination.queryString != null && this.pagination.queryString.length > 0)
+                    this.pagination.currentPage = 1;
+
+                // 封装请求参数,当前页、每页记录数、查询条件 与后端QueryPageBean的属性对应
+                var params = {
+                    currentPage: this.pagination.currentPage,
+                    pageSize: this.pagination.pageSize,
+                    queryString: this.pagination.queryString
+                };
+                console.log(params);
+                axios.post(this.backed_url+"/checkitem/findPage.do", params)
+                    .then((response)=>{
+                        // response = PageResult; ==> 传过来total,和rows
+                        this.dataList = response.data.rows;
+                        this.pagination.total = response.data.total;
+
+                    });
             },
             // 重置表单
             resetForm(formName) {
@@ -295,6 +315,10 @@
             },
             //切换页码
             handleCurrentChange(currentPage) {
+                // 将当前点击的页面,传给当前显示的页
+                this.pagination.currentPage = currentPage;
+                // 从新查询该页的数据
+                this.findPage();
             },
             // 删除
             handleDelete(row) {
