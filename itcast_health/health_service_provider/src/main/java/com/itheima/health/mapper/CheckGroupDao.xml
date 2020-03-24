@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.health.dao.CheckGroupDao">
+
+    <!--
+     有时候新增一条数据，知道新增成功即可，但是有时候，需要这条新增数据的主键，
+        以便逻辑使用，再将其查询出来明显不符合要求，效率也变低了。
+        这时候，通过一些设置，mybatis可以将insert的数据的主键返回，直接拿到新增数据的主键，以便后续使用。
+        使用<selectKey>标签
+     -->
+
+    <insert id="add" parameterType="CheckGroup">
+        INSERT INTO t_checkgroup(code, name, helpCode, sex, remark, attention)
+        VALUES (#{code},#{name},#{helpCode},#{sex},#{remark},#{attention})
+        <!-- 上面插入成功后,返回上面记录的主键-->
+        <selectKey resultType="integer" order="AFTER" keyProperty="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="addCheckGroupAndCheckItem">
+        INSERT INTO t_checkgroup_checkitem (checkgroup_id, checkitem_id)
+        <!-- 将checkgroup_id 当做map的key , checkitem_id当做value -->
+        VALUES (#{checkgroup_id}, #{checkitem_id})
+    </insert>
+
+</mapper>
