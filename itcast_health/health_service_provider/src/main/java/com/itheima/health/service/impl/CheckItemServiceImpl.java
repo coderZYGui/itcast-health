@@ -10,6 +10,7 @@ import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Description:
@@ -24,6 +25,8 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Autowired
     private CheckItemDao checkItemDao;
 
+    // 增删改把事务加上
+    @Transactional
     @Override
     public void add(CheckItem checkItem) {
         log.debug("checkitem: {}", checkItem);
@@ -41,6 +44,7 @@ public class CheckItemServiceImpl implements CheckItemService {
         return new PageResult(pageData.getTotal(), pageData.getResult());
     }
 
+    @Transactional
     @Override
     public void deleteById(Integer id) {
         log.debug("deleteById {}", id);
@@ -49,5 +53,18 @@ public class CheckItemServiceImpl implements CheckItemService {
         if (count > 0)
             throw new RuntimeException("该检查项有关联数据,不能删除!");
         checkItemDao.deleteCheckItemById(id);
+    }
+
+    @Override
+    public CheckItem findById(Integer id) {
+        log.debug("findById {}", id);
+        return checkItemDao.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public void edit(CheckItem checkItem) {
+        log.debug("edit checkItem {}", checkItem);
+        checkItemDao.edit(checkItem);
     }
 }

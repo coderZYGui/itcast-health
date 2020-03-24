@@ -18,9 +18,19 @@
         SELECT COUNT(*) FROM t_checkgroup_checkitem
         WHERE checkitem_id = #{checkItemId}
     </select>
-    
+
     <delete id="deleteCheckItemById" parameterType="integer">
         DELETE FROM t_checkitem WHERE id = #{id}
     </delete>
+
+    <select id="findById" parameterType="integer" resultType="com.itheima.health.pojo.CheckItem">
+        SELECT * FROM t_checkitem WHERE id = #{id}
+    </select>
+
+    <update id="edit" parameterType="CheckItem">
+        UPDATE t_checkitem
+        SET name = #{name},sex = #{sex},code = #{code},age = #{age},price = #{price},type = #{type},attention = #{attention},remark = #{remark}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

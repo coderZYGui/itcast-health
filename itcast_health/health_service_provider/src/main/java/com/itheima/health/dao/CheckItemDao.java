@@ -37,4 +37,17 @@ public interface CheckItemDao {
      * @param id 检查项id
      */
     void deleteCheckItemById(@Param("id") Integer id);
+
+    /**
+     * 根据id来获取检查项
+     * @param id 检查项的id
+     * @return 返回检查项的数据
+     */
+    CheckItem findById(@Param("id") Integer id);
+
+    /**
+     * 更新检查项
+     * @param checkItem 前台传过来的编辑数据
+     */
+    void edit(CheckItem checkItem);
 }

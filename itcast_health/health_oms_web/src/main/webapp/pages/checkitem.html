@@ -16,9 +16,7 @@
 <body class="hold-transition">
 <div id="app">
     <div class="content-header">
-        <h1>预约管理
-            <small>检查项管理</small>
-        </h1>
+        <h1>预约管理<small>检查项管理</small></h1>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>预约管理</el-breadcrumb-item>
@@ -28,8 +26,7 @@
     <div class="app-container">
         <div class="box">
             <div class="filter-container">
-                <el-input placeholder="项目编码/项目名称" v-model="pagination.queryString" style="width: 200px;"
-                          class="filter-item"></el-input>
+                <el-input placeholder="项目编码/项目名称" v-model="pagination.queryString" style="width: 200px;" class="filter-item"></el-input>
                 <el-button @click="findPage()" class="dalfBut">查询</el-button>
                 <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
             </div>
@@ -64,8 +61,7 @@
             <!-- 新增标签弹层 -->
             <div class="add-form">
                 <el-dialog title="新增检查项" :visible.sync="dialogFormVisible">
-                    <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right"
-                             label-width="100px">
+                    <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                         <el-row>
                             <el-col :span="12">
                                 <el-form-item label="项目编码" prop="code">
@@ -134,8 +130,7 @@
             <!-- 编辑标签弹层 -->
             <div class="add-form">
                 <el-dialog title="编辑检查项" :visible.sync="dialogFormVisible4Edit">
-                    <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right"
-                             label-width="100px">
+                    <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                         <el-row>
                             <el-col :span="12">
                                 <el-form-item label="项目编码" prop="code">
@@ -212,21 +207,21 @@
 <script>
     var vue = new Vue({
         el: '#app',
-        data: {
-            backed_url: "http://localhost:9002",
+        data:{
             pagination: {//分页相关模型数据
                 currentPage: 1,//当前页码
-                pageSize: 10,//每页显示的记录数
-                total: 0,//总记录数
-                queryString: null//查询条件
+                pageSize:10,//每页显示的记录数
+                total:0,//总记录数
+                queryString:null//查询条件
             },
             dataList: [],//当前页要展示的分页列表数据
+            backend_url:"http://localhost:9002",
             formData: {},//表单数据
             dialogFormVisible: false,//增加表单是否可见
-            dialogFormVisible4Edit: false,//编辑表单是否可见
+            dialogFormVisible4Edit:false,//编辑表单是否可见
             rules: {//校验规则
-                code: [{required: true, message: '项目编码为必填项', trigger: 'blur'}],
-                name: [{required: true, message: '项目名称为必填项', trigger: 'blur'}]
+                code: [{ required: true, message: '项目编码为必填项', trigger: 'blur' }],
+                name: [{ required: true, message: '项目名称为必填项', trigger: 'blur' }]
             }
         },
         //钩子函数，VUE对象初始化完成后自动执行
@@ -235,72 +230,120 @@
         },
         methods: {
             //编辑
+            /**
+             * 1. 进行表单验证
+             * 2. 表单验证成功，发送axios请求，进行回调处理
+             *    1.隐藏编辑窗口
+             *    2.编辑成功，弹出成功提示，显示服务返回的消息
+             *    3.编辑失败，弹出错误提示，显示服务返回的消息
+             *    4.无论什么情况，都重新请求当前分页
+             * 3. 表单验证失败，弹出验证失败提示
+             * */
             handleEdit() {
-            },
-            //添加
-            handleAdd() {
-                // 验证dataAddForm表单
-                this.$refs['dataAddForm'].validate((valid) => {
+                // 表单验证
+                this.$refs['dataEditForm'].validate( (valid) => {
                     if (valid) {
-                        console.log("验证成功!");
-
-                        // 打印输入的表单时数据
-                        console.log(this.formData);
-                        // 填写完表单数据后,提交请求, args: url, 表单数据formData
-                        axios.post("http://localhost:9002/checkitem/add.do", this.formData)
-                        // response.data 相当于 Result类
-                            .then((response) => {
-                                // 响应数据前,关闭表单的弹框
+                        // 表单验证成功
+                        console.log("表单验证成功,发送更新请求");
+                        // 表单校验通过，发送请求
+                        axios.post(this.backend_url+"/checkitem/edit.do",this.formData)
+                            .then( (response)=>{
+                                // 隐藏编辑窗口
+                                this.dialogFormVisible4Edit = false;
+                                // 编辑成功，弹出成功提示,显示服务返回的消息
+                                if (response.data.flag){
+                                    this.$message({
+                                        message:response.data.message,
+                                        type:'success'
+                                    });
+                                }else{
+                                    // 编辑失败，弹出错误提示，显示服务返回的消息
+                                    this.$message.error(response.data.message);
+                                }
+                            })
+                            .finally(()=>{
+                                //无论执行结果如何，重新发送请求查询分页数据
+                                this.findPage();
+                            });
+                    }else{
+                        this.$message.error("表单验证失败");
+                    }
+                });
+            },
+            /**
+             * 1. 进行表单验证
+             * 2. 表单验证成功，发送axios请求，进行回调处理
+             *    1.隐藏提交页面窗口
+             *    2.保存成功，弹出成功提示，显示服务返回的消息
+             *    3.保存失败，弹出错误提示，显示服务返回的消息
+             *    4.无论什么情况，都重新请求当前分页
+             * 3. 表单验证失败，弹出验证失败提示
+             * */
+            //添加
+            handleAdd () {
+                //校验表单输入项是否合法
+                this.$refs['dataAddForm'].validate((valid)=>{
+                    //表单数据校验通过，发送ajax请求将表单数据提交到后台
+                    if(valid){
+                        console.log("数据验证成功，准备提交请求");
+                        // 三个参 URL，表单数据，回调
+                        axios.post(this.backend_url+"/checkitem/add.do",this.formData)
+                            .then((response)=> {
+                                //隐藏新增窗口
                                 this.dialogFormVisible = false;
                                 //判断后台返回的flag值，true表示添加操作成功，false为添加操作失败
-
-                                if (response.data.flag){
-                                    // 保存成功，弹出成功提示，显示服务返回的消息
+                                //  保存成功，弹出成功提示，显示服务返回的消息
+                                if(response.data.flag){
                                     this.$message({
-                                        message: response.data.message,
-                                        type: 'success'
+                                        message:response.data.message,
+                                        type:'success'
                                     });
-                                } else {
-                                    // 保存失败,显示服务器返回的消息
+                                }else{
+                                    // 保存失败，弹出错误提示，显示服务返回的消息
                                     this.$message.error(response.data.message);
                                 }
                             }).finally(()=>{
-                                console.log("必须执行的代码");
-                                this.findPage();
-                            })
-
-                    } else {
-                        this.$message.error("验证失败!");
+                            console.log("最终执行");
+                            this.findPage();
+                        });
+                    }else{
+                        // 表单验证失败，弹出验证失败提示
+                        this.$message.error("数据验证失败");
                     }
-                })
+                });
             },
+            /**
+             * 1. 初始化请求参数
+             *     如果有查询条件，必须设置当前页码为1
+             * 2. 封装请求参数
+             *      当前页、默认每页记录数、查询条件
+             * 3. 发送axios请求，处理回调
+             *      把数据集和总记录数赋值给模型
+             * */
             //分页查询
             findPage() {
-                // 如果有查询条件,设置当前页码必须为1
-                if (this.pagination.queryString != null && this.pagination.queryString.length > 0)
+                // 如果有查询条件，当前页码必须是1
+                if(this.pagination.queryString !=null && this.pagination.queryString.length>1){
                     this.pagination.currentPage = 1;
-
-                // 封装请求参数,当前页、每页记录数、查询条件 与后端QueryPageBean的属性对应
+                }
+                // 封装请求参数,当前页、默认每页记录数、查询条件
                 var params = {
                     currentPage: this.pagination.currentPage,
                     pageSize: this.pagination.pageSize,
                     queryString: this.pagination.queryString
-                };
-                console.log(params);
-                axios.post(this.backed_url+"/checkitem/findPage.do", params)
-                    .then((response)=>{
-                        // response = PageResult; ==> 传过来total,和rows
-                        this.dataList = response.data.rows;
-                        this.pagination.total = response.data.total;
-
-                    });
+                }
+                // 发送axios请求，处理回调
+                axios.post(this.backend_url+"/checkitem/findPage.do",params).then((response)=>{
+                    // 把数据集和总记录数赋值给模型
+                    this.dataList = response.data.rows;
+                    this.pagination.total = response.data.total;
+                });
             },
             // 重置表单
             resetForm(formName) {
-                // 清空表单数据
                 this.formData = {};
                 // 不为空，清空之前的验证信息
-                if (this.$refs[formName] != null) {
+                if( this.$refs[formName] != null){
                     this.$refs[formName].resetFields();
                 }
             },
@@ -308,39 +351,64 @@
             handleCreate() {
                 // 清空上次验证的数据提示
                 this.resetForm('dataAddForm');
+                // 让窗口可见
                 this.dialogFormVisible = true;
             },
-            // 弹出编辑窗口
+            /**
+             *  1. 获取当前编辑数据的ID
+             *  2. 发送axios请求，进行回调处理
+             *    1. 返回成功，设置当前编辑窗口可见，把当前服务器返回数据设置给当前表单
+             *    2. 返回失败，提示自定义消息，并告知刷新页面
+             * */
             handleUpdate(row) {
+                // 根据ID获取数据
+                console.log("row id:"+row.id);
+                axios.get(this.backend_url+"/checkitem/findById.do?id="+row.id).then((response)=>{
+                    if(response.data.flag){
+                        // 设置编辑窗口属性，dialogFormVisible4Edit为true表示显示
+                        this.dialogFormVisible4Edit = true;
+                        // 为模型数据设置值，基于VUE双向数据绑定回显到页面
+                        this.formData = response.data.data;
+                    }else{
+                        this.$message.error("获取数据失败，请刷新当前页面");
+                    }
+                })
             },
             //切换页码
             handleCurrentChange(currentPage) {
-                // 将当前点击的页面,传给当前显示的页
+                // 注意改变当前页码
                 this.pagination.currentPage = currentPage;
-                // 从新查询该页的数据
+                // 重新执行查询
                 this.findPage();
             },
             // 删除
+            /**
+             * 1. 提示是否删除
+             * 2. 确认删除，发送axios请求，进行回调处理
+             *  1. 删除成功，提示服务器返回的正常消息，刷新当前页面
+             *  2. 删除失败，提示服务器返回的错误消息
+             * @param row 当前行数据
+             */
             handleDelete(row) {
-                this.$confirm("您确定要删除吗?", "提示", {type:'warning'})
-                // 点击确定后,发送请求
-                    .then(()=>{
-                       // 发请求
-                       axios.post(this.backed_url+"/checkitem/delete.do?id="+row.id)
-                           .then((response)=>{
-                               // response --> result(flag,message,data)
-                               if (response.data.flag){
-                                   this.$message({
-                                       message: response.data.message,
-                                       type: 'success'
-                                   });
-                                   // 删除row后,刷新页面
-                                   this.findPage();
-                               } else {
-                                   this.$message.error(response.data.message);
-                               }
-                           })
+                // 提示是否删除
+                this.$confirm("确定删除吗?","提示",{type:'warning'}).then(()=>{
+                    console.log("row id:"+row.id);
+                    // 确认删除，发送axios请求，进行回调处理
+                    axios.post(this.backend_url+"/checkitem/delete.do?id="+row.id).then((response)=>{
+                        if (response.data.flag){
+                            // 删除成功，提示服务器返回的正常消息
+                            this.$message({
+                                message:response.data.message,
+                                type:'success'
+                            });
+                            // 刷新当前页面
+                            this.findPage();
+                        }else{
+                            // 删除失败，提示服务器返回的错误消息
+                            this.$message.error("删除失败,"+response.data.message);
+                        }
                     });
+                });
             }
         }
     })

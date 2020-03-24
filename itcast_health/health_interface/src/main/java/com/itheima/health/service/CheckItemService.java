@@ -30,4 +30,17 @@ public interface CheckItemService {
      * @param id 检查项row中的id
      */
     void deleteById(Integer id);
+
+    /**
+     * 根据id来获取检查项
+     * @param id 检查项的id
+     * @return 返回检查项的数据
+     */
+    CheckItem findById(Integer id);
+
+    /**
+     * 更新检查项
+     * @param checkItem 前台传过来的表单数据
+     */
+    void edit(CheckItem checkItem);
 }

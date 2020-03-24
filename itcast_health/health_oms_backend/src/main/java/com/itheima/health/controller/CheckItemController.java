@@ -32,7 +32,7 @@ public class CheckItemController {
     @RequestMapping("/add")
     // @RequestBody是将前台传过来的JSON数据转为Java对象
     // 用来接收表单的数据
-    public Result add(@RequestBody CheckItem checkItem){
+    public Result add(@RequestBody CheckItem checkItem) {
         try {
             //log.debug("CheckItemController checkItem:{}", checkItem);
             System.out.println(checkItem);
@@ -40,32 +40,59 @@ public class CheckItemController {
             // 会返回一个JSON, 对象转JSON,在配置文件中配置了fastJson
             // 因为 @RestController = @Controller + @ResponseBody(将Controller返回的对象转为JSON数据)
             return new Result(true, MessageConst.ADD_CHECKITEM_SUCCESS);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConst.ADD_CHECKITEM_FAIL);
         }
     }
 
     @RequestMapping("/findPage")
-    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
         try {
             log.debug("queryPageBean:{}", queryPageBean);
             return checkItemService.pageQuery(queryPageBean);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new PageResult(0L, new ArrayList());
     }
 
     @RequestMapping("/delete")
-    public Result delete(Integer id){
+    public Result delete(Integer id) {
         log.debug("delete id:{}", id);
         try {
             checkItemService.deleteById(id);
             return new Result(true, MessageConst.DELETE_CHECKITEM_SUCCESS);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, e.getMessage());
+        }
+    }
+
+    @RequestMapping("/findById")
+    public Result findById(Integer id) {
+        log.debug("findById id:{}", id);
+        try {
+            CheckItem checkItem = checkItemService.findById(id);
+            return new Result(true, MessageConst.QUERY_CHECKITEM_SUCCESS, checkItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConst.QUERY_CHECKITEM_FAIL);
+        }
+    }
+
+    @RequestMapping("/edit")
+    public Result edit(@RequestBody  CheckItem checkItem){
+        try{
+            log.debug("edit checkItem:{}",checkItem);
+            // 调用Service，更新数据
+            checkItemService.edit(checkItem);
+            // 成功，返回编辑成功消息
+            return new Result(true,MessageConst.EDIT_CHECKITEM_SUCCESS);
+        }catch(Exception e){
+            e.printStackTrace();
+            // 失败，返回编辑失败消息
+            return new Result(false,MessageConst.EDIT_CHECKITEM_FAIL);
         }
     }
 }
