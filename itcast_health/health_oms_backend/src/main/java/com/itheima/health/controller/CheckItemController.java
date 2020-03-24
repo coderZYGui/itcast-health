@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 服务的消费者
@@ -93,6 +94,17 @@ public class CheckItemController {
             e.printStackTrace();
             // 失败，返回编辑失败消息
             return new Result(false,MessageConst.EDIT_CHECKITEM_FAIL);
+        }
+    }
+
+    @RequestMapping("/findAll")
+    public Result findAll(){
+        try {
+            List<CheckItem> list = checkItemService.findAll();
+            return new Result(true, MessageConst.QUERY_CHECKITEM_SUCCESS, list);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.QUERY_CHECKITEM_FAIL);
         }
     }
 }

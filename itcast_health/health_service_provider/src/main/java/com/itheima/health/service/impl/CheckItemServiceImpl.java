@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -66,5 +68,10 @@ public class CheckItemServiceImpl implements CheckItemService {
     public void edit(CheckItem checkItem) {
         log.debug("edit checkItem {}", checkItem);
         checkItemDao.edit(checkItem);
+    }
+
+    @Override
+    public List<CheckItem> findAll() {
+        return checkItemDao.findAll();
     }
 }

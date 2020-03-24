@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.itheima.health.pojo.CheckItem;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -50,4 +52,10 @@ public interface CheckItemDao {
      * @param checkItem 前台传过来的编辑数据
      */
     void edit(CheckItem checkItem);
+
+    /**
+     * 查询所有的检查项
+     * @return 将检查项放入集合中并返回
+     */
+    List<CheckItem> findAll();
 }
