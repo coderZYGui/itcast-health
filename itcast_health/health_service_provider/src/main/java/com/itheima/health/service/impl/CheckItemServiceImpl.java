@@ -40,4 +40,14 @@ public class CheckItemServiceImpl implements CheckItemService {
         Page<CheckItem> pageData = checkItemDao.selectByCondition(queryPageBean.getQueryString());
         return new PageResult(pageData.getTotal(), pageData.getResult());
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        log.debug("deleteById {}", id);
+        // 判断删除的检查项id是否有关联数据
+        Long count = checkItemDao.countCheckItemsById(id);
+        if (count > 0)
+            throw new RuntimeException("该检查项有关联数据,不能删除!");
+        checkItemDao.deleteCheckItemById(id);
+    }
 }

@@ -322,6 +322,25 @@
             },
             // 删除
             handleDelete(row) {
+                this.$confirm("您确定要删除吗?", "提示", {type:'warning'})
+                // 点击确定后,发送请求
+                    .then(()=>{
+                       // 发请求
+                       axios.post(this.backed_url+"/checkitem/delete.do?id="+row.id)
+                           .then((response)=>{
+                               // response --> result(flag,message,data)
+                               if (response.data.flag){
+                                   this.$message({
+                                       message: response.data.message,
+                                       type: 'success'
+                                   });
+                                   // 删除row后,刷新页面
+                                   this.findPage();
+                               } else {
+                                   this.$message.error(response.data.message);
+                               }
+                           })
+                    });
             }
         }
     })

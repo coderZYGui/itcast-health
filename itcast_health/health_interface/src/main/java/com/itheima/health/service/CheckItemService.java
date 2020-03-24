@@ -24,4 +24,10 @@ public interface CheckItemService {
      * @return 分页结果的实体类
      */
     PageResult pageQuery(QueryPageBean queryPageBean);
+
+    /**
+     * 根据前台传的id来删除 检查项
+     * @param id 检查项row中的id
+     */
+    void deleteById(Integer id);
 }

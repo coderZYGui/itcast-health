@@ -14,4 +14,13 @@
         </if>
     </select>
 
+    <select id="countCheckItemsById" resultType="java.lang.Long" parameterType="integer">
+        SELECT COUNT(*) FROM t_checkgroup_checkitem
+        WHERE checkitem_id = #{checkItemId}
+    </select>
+    
+    <delete id="deleteCheckItemById" parameterType="integer">
+        DELETE FROM t_checkitem WHERE id = #{id}
+    </delete>
+
 </mapper>
