@@ -287,6 +287,19 @@
         methods: {
             //编辑
             handleEdit() {
+                axios.post(this.backend_url+"/checkgroup/edit.do?checkItemIds="+this.checkitemIds, this.formData)
+                    .then((response)=>{
+                        if (response.data.flag){
+                            this.$message({
+                               message: response.data.message,
+                               type: "success"
+                            });
+                            this.dialogFormVisible4Edit = false;
+                            this.findPage();
+                        } else {
+                            this.$message.error(response.data.message);
+                        }
+                    })
             },
             //添加
             handleAdd() {
@@ -316,7 +329,7 @@
              */
             findPage() {
                 // 判断是否有查询条件
-                if (this.pagination.queryString != null && this.pagination.queryString.length > 0){
+                if (this.pagination.queryString != null && this.pagination.queryString.length > 0) {
                     this.pagination.currentPage = 1;
                 }
                 // 初始化查询参数
@@ -326,8 +339,8 @@
                     queryString: this.pagination.queryString
                 };
                 // 发送请求
-                axios.post(this.backend_url+"/checkgroup/findPage.do", params)
-                    .then((response)=>{
+                axios.post(this.backend_url + "/checkgroup/findPage.do", params)
+                    .then((response) => {
                         // response.data = PageResult ==> total, rows属性
                         this.pagination.total = response.data.total;
                         this.dataList = response.data.rows;
@@ -356,9 +369,39 @@
             },
             // 弹出编辑窗口
             handleUpdate(row) {
+                // 回显检查组的基本数据; 根据检查组id来查询检查组的信息(不包括检查项)
+                axios.get(this.backend_url + "/checkgroup/findById.do?id=" + row.id)
+                    .then((response) => {
+                        if (response.data.flag) {
+                            this.dialogFormVisible4Edit = true;
+                            // 把服务器检查组数据复制给模型
+                            this.formData = response.data.data;
+
+                            // 显示检查项的全部列表
+                            axios.get(this.backend_url + "/checkitem/findAll.do")
+                                .then((response) => {
+                                    if (response.data.flag) {
+                                        // 把服务器检查项列表赋值给检查项列表模型
+                                        this.tableData = response.data.data;
+                                        // 根据查询当前检查组包含的所有检查项id,用于页面回显
+                                        axios.get(this.backend_url + "/checkgroup/findCheckItemIdsByCheckGroupId.do?id=" + row.id)
+                                            .then((response) => {
+                                                // 为模型数据赋值,通过VUE数据双向绑定进行信息的回显
+                                                this.checkitemIds = response.data.data;
+                                            })
+                                    } else {
+                                        this.$message.error(response.data.message);
+                                    }
+                                });
+                        } else {
+                            this.$message.error(response.data.message);
+                        }
+                    });
             },
             //切换页码
             handleCurrentChange(currentPage) {
+                this.pagination.currentPage = currentPage;
+                this.findPage();
             },
             // 删除
             handleDelete(row) {

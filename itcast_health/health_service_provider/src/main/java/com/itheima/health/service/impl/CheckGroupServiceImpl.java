@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,5 +62,39 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         PageHelper.startPage(currentPage, pageSize);
         Page<CheckGroup> page = checkGroupDao.selectByCondition(queryString);
         return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    @Override
+    public CheckGroup findById(Integer id) {
+        log.debug(">>>> findById:{}", id);
+        return checkGroupDao.findById(id);
+    }
+
+    @Override
+    public List<Integer> findCheckItemIdsByCheckGroupId(Integer id) {
+        log.debug(">>>> findCheckItemIdsByCheckGroupId:{}", id);
+        /*List<Integer> checkItemIds = new ArrayList<>();
+        checkItemIds.add(28);
+        checkItemIds.add(29);
+        checkItemIds.add(30);*/
+        List<Integer> checkItemIds = checkGroupDao.findCheckItemIdsByCheckGroupId(id);
+        return checkItemIds;
+    }
+
+    @Transactional
+    @Override
+    public void edit(CheckGroup checkGroup, Integer[] checkItemIds) {
+        log.debug(">>>> checkGroup:{} checkItemIds:{}", checkGroup, checkItemIds);
+        // 更新检查组信息
+        checkGroupDao.edit(checkGroup);
+        // 删除检查组之前的关联关系
+        checkGroupDao.deleteCheckItemsListByCheckGroupId(checkGroup.getId());
+        // 保存新的关系
+        for (Integer checkItemId : checkItemIds) {
+            Map map = new HashMap();
+            map.put("checkgroup_id", checkGroup.getId());
+            map.put("checkitem_id", checkItemId);
+            checkGroupDao.addCheckGroupAndCheckItem(map);
+        }
     }
 }

@@ -26,13 +26,28 @@
 
     <select id="selectByCondition" resultType="com.itheima.health.pojo.CheckGroup">
         SELECT * FROM t_checkgroup
-        <if test="queryString != null and queryString.length > 0">
-            WHERE code LIKE CONCAT ('%', #{queryString}, '%')
-            OR
-            name LIKE CONCAT('%', #{queryString}, '%')
-            OR
-            helpCode LIKE CONCAT('%', #{queryString}, '%')
+        <if test=" queryString!=null and queryString.length > 0">
+            WHERE code LIKE CONCAT('%',#{queryString},'%')or name LIKE CONCAT('%',#{queryString},'%') or helpCode like
+            CONCAT('%',#{queryString},'%')
         </if>
     </select>
+
+    <select id="findById" resultType="com.itheima.health.pojo.CheckGroup">
+        SELECT * FROM t_checkgroup WHERE id = #{id}
+    </select>
+
+    <select id="findCheckItemIdsByCheckGroupId" resultType="java.lang.Integer">
+        select checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{id}
+    </select>
+
+    <update id="edit">
+        update t_checkgroup
+        set code = #{code}, name = #{name}, helpCode = #{helpCode}, sex = #{sex}, remark = #{remark}, attention = #{attention}
+        where id = #{id};
+    </update>
+
+    <delete id="deleteCheckItemsListByCheckGroupId" parameterType="CheckGroup">
+        DELETE FROM t_checkgroup_checkitem WHERE checkgroup_id = #{checkGroupId}
+    </delete>
 
 </mapper>

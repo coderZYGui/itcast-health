@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.itheima.health.pojo.CheckGroup;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,5 +28,36 @@ public interface CheckGroupDao {
      */
     void addCheckGroupAndCheckItem(Map map);
 
+    /**
+     * 根据查询条件来对检查组进行分页
+     * @param queryString 查询条件
+     * @return
+     */
     Page<CheckGroup> selectByCondition(@Param("queryString") String queryString);
+
+    /**
+     * 根据ID,获取检查组信息
+     * @param id 检查组id
+     * @return 检查组对象
+     */
+    CheckGroup findById(@Param("id") Integer id);
+
+    /**
+     * 根据前端传来的检查组id,获取该检查组中的检查项id列表
+     * @param id 检查组id
+     * @return 检查项id列表
+     */
+    List<Integer> findCheckItemIdsByCheckGroupId(@Param("id") Integer id);
+
+    /**
+     * 更新检查组的基本信息
+     * @param checkGroup 检查组中的表单数据
+     */
+    void edit(CheckGroup checkGroup);
+
+    /**
+     * 根据给定的检查组id,来删除该检查组中的所有检查项
+     * @param checkGroupId
+     */
+    void deleteCheckItemsListByCheckGroupId(@Param("checkGroupId") Integer checkGroupId);
 }
