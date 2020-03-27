@@ -24,4 +24,15 @@
         VALUES (#{checkgroup_id}, #{checkitem_id})
     </insert>
 
+    <select id="selectByCondition" resultType="com.itheima.health.pojo.CheckGroup">
+        SELECT * FROM t_checkgroup
+        <if test="queryString != null and queryString.length > 0">
+            WHERE code LIKE CONCAT ('%', #{queryString}, '%')
+            OR
+            name LIKE CONCAT('%', #{queryString}, '%')
+            OR
+            helpCode LIKE CONCAT('%', #{queryString}, '%')
+        </if>
+    </select>
+
 </mapper>

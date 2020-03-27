@@ -1,6 +1,8 @@
 package com.itheima.health.dao;
 
+import com.github.pagehelper.Page;
 import com.itheima.health.pojo.CheckGroup;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
@@ -24,4 +26,6 @@ public interface CheckGroupDao {
      * @param map
      */
     void addCheckGroupAndCheckItem(Map map);
+
+    Page<CheckGroup> selectByCondition(@Param("queryString") String queryString);
 }

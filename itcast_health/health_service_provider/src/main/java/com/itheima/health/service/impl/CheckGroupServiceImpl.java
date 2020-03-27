@@ -1,7 +1,10 @@
 package com.itheima.health.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.itheima.health.dao.CheckGroupDao;
+import com.itheima.health.entity.PageResult;
 import com.itheima.health.pojo.CheckGroup;
 import com.itheima.health.service.CheckGroupService;
 import lombok.extern.slf4j.Slf4j;
@@ -50,5 +53,13 @@ public class CheckGroupServiceImpl implements CheckGroupService {
                 //throw new RuntimeException("测试事务异常抛出");
             }*/
         }
+    }
+
+    @Override
+    public PageResult pageQuery(Integer currentPage, Integer pageSize, String queryString) {
+        log.debug(">>>>> currentPage:{}, pageSize:{}, queryString:{}", currentPage, pageSize, queryString);
+        PageHelper.startPage(currentPage, pageSize);
+        Page<CheckGroup> page = checkGroupDao.selectByCondition(queryString);
+        return new PageResult(page.getTotal(), page.getResult());
     }
 }

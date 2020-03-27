@@ -308,7 +308,30 @@
                 })
             },
             //分页查询
+            /**
+             * 1. 判断是否有查询条件，如果有， 设置 currentPage = 1
+             * 2. 初始化查询参数
+             * 3. 发送请求
+             * 4. 在回调中赋值
+             */
             findPage() {
+                // 判断是否有查询条件
+                if (this.pagination.queryString != null && this.pagination.queryString.length > 0){
+                    this.pagination.currentPage = 1;
+                }
+                // 初始化查询参数
+                var params = {
+                    currentPage: this.pagination.currentPage,
+                    pageSize: this.pagination.pageSize,
+                    queryString: this.pagination.queryString
+                };
+                // 发送请求
+                axios.post(this.backend_url+"/checkgroup/findPage.do", params)
+                    .then((response)=>{
+                        // response.data = PageResult ==> total, rows属性
+                        this.pagination.total = response.data.total;
+                        this.dataList = response.data.rows;
+                    });
             },
             // 重置表单
             resetForm() {
