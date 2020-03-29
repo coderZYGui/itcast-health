@@ -3,6 +3,8 @@ package com.itheima.health.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.common.MessageConst;
 import com.itheima.health.common.RedisConst;
+import com.itheima.health.entity.PageResult;
+import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.JedisPool;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -76,5 +79,17 @@ public class SetmealController {
             e.printStackTrace();
             return new Result(false, MessageConst.ADD_SETMEAL_FAIL);
         }
+    }
+
+    @RequestMapping("/findPage")
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+        PageResult pageResult = null;
+        try {
+            pageResult = setmealService.pageQuery(queryPageBean);
+        } catch (Exception e){
+            e.printStackTrace();
+            pageResult = new PageResult(0L, new ArrayList());
+        }
+        return pageResult;
     }
 }

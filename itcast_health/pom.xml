@@ -14,6 +14,7 @@
         <module>health_service_provider</module>
         <module>health_oms_backend</module>
         <module>health_oms_web</module>
+        <module>health_jobs</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,6 +44,9 @@
         <slf4j.version>1.7.25</slf4j.version>
         <lombok.version>1.18.8</lombok.version>
         <qiniu-java-sdk.version>7.2.0</qiniu-java-sdk.version>
+        <quartz.version>2.2.1</quartz.version>
+        <quartz-jobs.version>2.2.1</quartz-jobs.version>
+        <spring-context-support.version>5.0.5.RELEASE</spring-context-support.version>
     </properties>
 
     <dependencyManagement>
@@ -206,6 +210,22 @@
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>${qiniu-java-sdk.version}</version>
+            </dependency>
+            <!--Quartz-->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz-jobs</artifactId>
+                <version>${quartz-jobs.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring-context-support.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

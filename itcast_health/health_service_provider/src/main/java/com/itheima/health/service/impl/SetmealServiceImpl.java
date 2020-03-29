@@ -1,8 +1,12 @@
 package com.itheima.health.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.itheima.health.common.RedisConst;
 import com.itheima.health.dao.SetmealDao;
+import com.itheima.health.entity.PageResult;
+import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +49,15 @@ public class SetmealServiceImpl implements SetmealService {
 
         // 当添加套餐的时候,将图片保存到Redis中
         jedisPool.getResource().sadd(RedisConst.SETMEAL_PIC_DB_RESOURCES, setmeal.getImg());
+    }
+
+    @Override
+    public PageResult pageQuery(QueryPageBean queryPageBean) {
+        // 分页插件
+        PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
+        // 调用dao获取Page
+        Page<Setmeal> pages = setmealDao.PageBean(queryPageBean.getQueryString());
+        // 构建PageResult并返回
+        return new PageResult(pages.getTotal(), pages.getResult());
     }
 }

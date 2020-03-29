@@ -14,4 +14,15 @@
         INSERT into t_setmeal_checkgroup
         VALUES (#{setmeal_id},#{checkgroup_id})
       </insert>
+    <select id="PageBean" resultType="com.itheima.health.pojo.Setmeal">
+        SELECT *FROM t_setmeal
+        <if test="queryString != null and queryString.length > 0">
+            WHERE code LIKE CONCAT ('%' #{queryString}, '%')
+            OR
+            name LIKE CONCAT ('%' #{queryString}, '%')
+            OR
+            helpCode LIKE CONCAT ('%', #{queryString}, '%')
+        </if>
+    </select>
+
 </mapper>

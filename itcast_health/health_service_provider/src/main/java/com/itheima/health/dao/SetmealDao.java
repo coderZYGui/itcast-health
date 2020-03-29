@@ -1,6 +1,8 @@
 package com.itheima.health.dao;
 
+import com.github.pagehelper.Page;
 import com.itheima.health.pojo.Setmeal;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
@@ -25,4 +27,6 @@ public interface SetmealDao {
      * @param map 套餐ID与检查组ID对于关系
      */
     void addSetmealAndCheckGroup(Map<String, Integer> map);
+
+    Page<Setmeal> PageBean(@Param("queryString") String queryString);
 }

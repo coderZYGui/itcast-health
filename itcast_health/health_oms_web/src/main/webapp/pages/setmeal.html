@@ -299,7 +299,7 @@
                         pageSize:this.pagination.pageSize,
                         queryString:this.pagination.queryString
                     };
-                    axios.post("/setmeal/findPage.do",param).then((response)=> {
+                    axios.post(this.backend_url+"/setmeal/findPage.do",param).then((response)=> {
                         this.dataList = response.data.rows;
                         this.pagination.total = response.data.total;
                     });
