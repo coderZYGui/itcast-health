@@ -1,11 +1,14 @@
 package com.itheima.health.pojo;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 体检套餐
  */
+@ToString
 public class Setmeal implements Serializable {
     private Integer id;
     private String name;

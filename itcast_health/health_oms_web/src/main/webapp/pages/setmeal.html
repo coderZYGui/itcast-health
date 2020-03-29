@@ -162,7 +162,7 @@
                                                     <el-form-item label="上传图片">
                                                         <el-upload
                                                                 class="avatar-uploader"
-                                                                action="/setmeal/upload.do"
+                                                                action="http://localhost:9002/setmeal/upload.do"
                                                                 :auto-upload="autoUpload"
                                                                 name="imgFile"
                                                                 :show-file-list="false"
@@ -253,6 +253,8 @@
             methods: {
 				//图片上传完成后自动执行
                 handleAvatarSuccess(response, file,fileList) {
+                    // response 相当于后端传来的 result
+                    console.log(response);
                     this.imageUrl = response.data;
                     this.$message({
                         message: response.message,
@@ -275,7 +277,7 @@
                 },
                 //添加
                 handleAdd () {
-                    axios.post("/setmeal/add.do?checkgroupIds=" + this.checkgroupIds,this.formData).then((response)=> {
+                    axios.post(this.backend_url+"/setmeal/add.do?checkGroupIds=" + this.checkgroupIds,this.formData).then((response)=> {
                         this.dialogFormVisible = false;
                         if(response.data.flag){
                             this.$message({
