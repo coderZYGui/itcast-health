@@ -42,6 +42,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
         <lombok.version>1.18.8</lombok.version>
+        <qiniu-java-sdk.version>7.2.0</qiniu-java-sdk.version>
     </properties>
 
     <dependencyManagement>
@@ -200,6 +201,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu-java-sdk.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
