@@ -26,4 +26,9 @@ public interface OrderSettingService {
      */
     List<Map> getOrderSettingByMonth(String date);
 
+    /**
+     * 基于日期更新或新增预约设置
+     * @param orderSetting
+     */
+    void editOrderSettingByDate(OrderSetting orderSetting);
 }

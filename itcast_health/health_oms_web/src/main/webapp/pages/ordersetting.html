@@ -22,7 +22,9 @@
 <body class="hold-transition">
 <div id="app">
     <div class="content-header">
-        <h1>预约管理<small>预约设置</small></h1>
+        <h1>预约管理
+            <small>预约设置</small>
+        </h1>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>预约管理</el-breadcrumb-item>
@@ -34,7 +36,9 @@
             <div class="box ordersetting">
                 <el-card class="box-card">
                     <div class="boxMain">
-                        <el-button style="margin-bottom: 20px;margin-right: 20px" type="primary" @click="downloadTemplate()">模板下载</el-button>
+                        <el-button style="margin-bottom: 20px;margin-right: 20px" type="primary"
+                                   @click="downloadTemplate()">模板下载
+                        </el-button>
                         <el-upload action="http://localhost:9002/ordersetting/upload.do"
                                    name="excelFile"
                                    :show-file-list="false"
@@ -102,7 +106,9 @@
                                                     </template>
                                                 </template>
                                             </template>
-                                            <button v-if="dayobject.day > today" @click="handleOrderSet(dayobject.day)" class="orderbtn">设置</button>
+                                            <button v-if="dayobject.day > today" @click="handleOrderSet(dayobject.day)"
+                                                    class="orderbtn">设置
+                                            </button>
                                         </template>
 
                                     </div>
@@ -124,9 +130,9 @@
     new Vue({
 
         el: '#app',
-        data:{
-            backend_url:"http://localhost:9002",
-            today:new Date(),
+        data: {
+            backend_url: "http://localhost:9002",
+            today: new Date(),
             currentDay: 1,
             currentMonth: 1,
             currentYear: 1970,
@@ -138,30 +144,44 @@
             this.initData(null);
         },
         methods: {
-            handleOrderSet(day){
+            handleOrderSet(day) {
                 //alert(day);
-                this.$prompt("输入可设置人数","预约设置",{
-                    confirmButtonText:"确定",
-                    cancelButtonText:"取消",
-                    inputPattern:/^[0-9]*[1-9][0-9]*$/,
-                    inputErrorMessage:"必须输入正整数"
-                }).then(({value})=>{
+                this.$prompt("输入可设置人数", "预约设置", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    inputPattern: /^[0-9]*[1-9][0-9]*$/,
+                    inputErrorMessage: "必须输入正整数"
+                }).then(({value}) => {
                     //alert(value);
                     var formDatas = {
-                        orderDate:this.formatDate(day.getFullYear(),day.getMonth()+1,day.getDate()),
-                        number:value
+                        orderDate: this.formatDate(day.getFullYear(), day.getMonth() + 1, day.getDate()),
+                        number: value
                     };
                     console.log(formDatas);
+                    // 发送请求
+                    axios.post(this.backend_url + "/ordersetting/editNumberByDate.do", formDatas)
+                        .then((response) => {
+                            if (response.data.flag) {
+                                // 刷新日历,从选中的日期所在的月份的1号开始
+                                this.initData(this.formatDate(day.getFullYear(), day.getMonth() + 1, 1));
+                                this.$message({
+                                    message: response.data.message,
+                                    type: "success"
+                                });
+                            } else {
+                                this.$message.error(response.data.message);
+                            }
+                        })
                 })
             },
-            beforeUpload(file){
+            beforeUpload(file) {
                 console.log(file.name);
                 // 使用后缀名，判断文件类型
                 var fileName = file.name;
                 var fileType = fileName.substr(fileName.lastIndexOf("."));
-                console.log("fileType:"+fileType);
+                console.log("fileType:" + fileType);
                 const isXLS = file.type === 'application/vnd.ms-excel';
-                if(isXLS){
+                if (isXLS) {
                     return true;
                 }
                 const isXLSX = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -171,16 +191,16 @@
                 this.$message.error('上传文件只能是xls或者xlsx格式!');
                 return false;
             },
-            downloadTemplate(){
-                window.location.href="../template/ordersetting_template.xlsx";
+            downloadTemplate() {
+                window.location.href = "../template/ordersetting_template.xlsx";
             },
             handleSuccess(response, file) {
-                if(response.flag){
+                if (response.flag) {
                     this.$message({
                         message: response.message,
                         type: 'success'
                     });
-                }else{
+                } else {
                     this.$message.error(response.message);
                 }
                 console.log(response, file, fileList);
@@ -194,21 +214,21 @@
                     date = new Date(cur);
                 } else {
                     var now = new Date();
-                    date = new Date(this.formatDate(now.getFullYear(), now.getMonth()+1, 1));
+                    date = new Date(this.formatDate(now.getFullYear(), now.getMonth() + 1, 1));
                 }
                 // 获取起始日期的日期元素，当年、当月、当日、当周(本月第一天是周几)
                 this.currentDay = date.getDate();
                 this.currentYear = date.getFullYear();
                 this.currentMonth = date.getMonth() + 1;
                 this.currentWeek = date.getDay(); // //本月第一天是周几（周日0 周六 6）2019-6-1 是周六
-                console.log(this.currentYear+" "+" "+this.currentMonth+" "+this.currentDay+" week:"+this.currentWeek );
+                console.log(this.currentYear + " " + " " + this.currentMonth + " " + this.currentDay + " week:" + this.currentWeek);
                 var today = new Date();
                 if (this.currentWeek == 0) {
                     this.currentWeek = 7;
                 }
                 // 封装一个字符串日期 2019-6-1
                 var str = this.formatDate(this.currentYear, this.currentMonth, this.currentDay);
-                console.log("str:"+str);
+                console.log("str:" + str);
                 this.days.length = 0;
                 // 今天是周日，放在第一行第7个位置，前面6个
                 //初始化本周数据,把日期对象封装到dayobject中,并把其放入days数组
@@ -241,11 +261,11 @@
                 ];
                 // 发送ajax请求，根据当前页面对应的月份查询数据库,封装成相应相应的结果赋值给leftobj用于页面展示
                 var queryDate = this.currentYear + "-" + this.currentMonth;
-                axios.post(this.backend_url+"/ordersetting/getOrderSettingByMonth.do?date="+queryDate)
+                axios.post(this.backend_url + "/ordersetting/getOrderSettingByMonth.do?date=" + queryDate)
                     .then((response) => {
-                        if(response.data.flag){
+                        if (response.data.flag) {
                             this.leftobj = response.data.data;
-                        }else{
+                        } else {
                             this.$message.error(response.data.message);
                         }
                     });

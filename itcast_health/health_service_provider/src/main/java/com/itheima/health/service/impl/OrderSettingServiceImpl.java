@@ -49,17 +49,30 @@ public class OrderSettingServiceImpl implements OrderSettingService {
         List<Map> listMap = new ArrayList<>();
         // {date: 3, number:100, reservations:0}
         // date的格式: 2020-3
-        String beginDate = date+"-1";
-        String endDate = date+"-31";
+        String beginDate = date + "-1";
+        String endDate = date + "-31";
         List<OrderSetting> orderSettingList = orderSettingDao.getOrderSettingByMonth(beginDate, endDate);
         // 把OrderSetting的date转换为某月的某一天
         for (OrderSetting orderSetting : orderSettingList) {
             Map map = new HashMap();
-            map.put("date", orderSetting.getOrderDate().getDate());
+            map.put("date", orderSetting.getOrderDate().getDate()); // 几号
             map.put("number", orderSetting.getNumber());
             map.put("reservations", orderSetting.getReservations());
             listMap.add(map);
         }
         return listMap;
+    }
+
+    @Override
+    public void editOrderSettingByDate(OrderSetting orderSetting) {
+        log.debug(">>>>>>orderSetting:{}", orderSetting);
+        // 判断该预约日期是否有预约
+        Long count = orderSettingDao.countByOrderDate(orderSetting.getOrderDate());
+        if (count > 0) {
+            // 该日期下有预约数据
+            orderSettingDao.updateOrderSettingByOrderDate(orderSetting);
+        } else {
+            orderSettingDao.add(orderSetting);
+        }
     }
 }

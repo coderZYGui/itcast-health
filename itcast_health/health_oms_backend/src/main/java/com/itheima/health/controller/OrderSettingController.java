@@ -7,6 +7,7 @@ import com.itheima.health.pojo.OrderSetting;
 import com.itheima.health.service.OrderSettingService;
 import com.itheima.health.utils.POIUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,6 +67,18 @@ public class OrderSettingController {
         } catch (Exception e){
             e.printStackTrace();
             return new Result(false, MessageConst.GET_ORDERSETTING_FAIL);
+        }
+    }
+
+    @RequestMapping("/editNumberByDate")
+    public Result editNumberByDate(@RequestBody OrderSetting orderSetting){
+        log.debug("orderSetting:{}", orderSetting);
+        try {
+            orderSettingService.editOrderSettingByDate(orderSetting);
+            return new Result(true, MessageConst.ACTION_SUCCESS);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.ACTION_FAIL);
         }
     }
 }
