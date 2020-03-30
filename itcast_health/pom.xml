@@ -47,6 +47,8 @@
         <quartz.version>2.2.1</quartz.version>
         <quartz-jobs.version>2.2.1</quartz-jobs.version>
         <spring-context-support.version>5.0.5.RELEASE</spring-context-support.version>
+        <poi.version>3.14</poi.version>
+        <poi-ooxml.version>3.14</poi-ooxml.version>
     </properties>
 
     <dependencyManagement>
@@ -227,6 +229,19 @@
                 <artifactId>spring-context-support</artifactId>
                 <version>${spring-context-support.version}</version>
             </dependency>
+
+            <!-- POI 操作Excel -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi-ooxml.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>

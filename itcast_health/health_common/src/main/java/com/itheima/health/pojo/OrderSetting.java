@@ -1,11 +1,14 @@
 package com.itheima.health.pojo;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 预约设置
  */
+@ToString
 public class OrderSetting implements Serializable{
     private Integer id ;
     private Date orderDate;//预约设置日期
