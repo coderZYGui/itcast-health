@@ -60,4 +60,5 @@ public class SetmealServiceImpl implements SetmealService {
         // 构建PageResult并返回
         return new PageResult(pages.getTotal(), pages.getResult());
     }
+
 }

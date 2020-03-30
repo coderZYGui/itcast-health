@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 预约设置控制器
@@ -54,6 +55,17 @@ public class OrderSettingController {
         } catch (Exception e){
             e.printStackTrace();
             return new Result(false, MessageConst.IMPORT_ORDERSETTING_FAIL);
+        }
+    }
+
+    @RequestMapping("/getOrderSettingByMonth")
+    public Result getOrderSettingByMonth(String date){
+        try {
+            List<Map> mapList = orderSettingService.getOrderSettingByMonth(date);
+            return new Result(true, MessageConst.GET_ORDERSETTING_SUCCESS, mapList);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.GET_ORDERSETTING_FAIL);
         }
     }
 }

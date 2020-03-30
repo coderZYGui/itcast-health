@@ -8,7 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 预约设置批量导入类
@@ -38,5 +41,25 @@ public class OrderSettingServiceImpl implements OrderSettingService {
                 orderSettingDao.add(orderSetting);
             }
         }
+    }
+
+    @Override
+    public List<Map> getOrderSettingByMonth(String date) {
+        log.debug("getOrderSettingByMonth date:{}", date);
+        List<Map> listMap = new ArrayList<>();
+        // {date: 3, number:100, reservations:0}
+        // date的格式: 2020-3
+        String beginDate = date+"-1";
+        String endDate = date+"-31";
+        List<OrderSetting> orderSettingList = orderSettingDao.getOrderSettingByMonth(beginDate, endDate);
+        // 把OrderSetting的date转换为某月的某一天
+        for (OrderSetting orderSetting : orderSettingList) {
+            Map map = new HashMap();
+            map.put("date", orderSetting.getOrderDate().getDate());
+            map.put("number", orderSetting.getNumber());
+            map.put("reservations", orderSetting.getReservations());
+            listMap.add(map);
+        }
+        return listMap;
     }
 }

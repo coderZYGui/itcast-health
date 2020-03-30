@@ -16,4 +16,11 @@
         <!-- 查询该预约日期是否有数据 -->
         SELECT count(*) FROM t_ordersetting WHERE orderDate = #{orderDate}
     </select>
+
+    <select id="getOrderSettingByMonth" resultType="com.itheima.health.pojo.OrderSetting">
+        SELECT * FROM t_ordersetting
+        WHERE
+          orderDate BETWEEN #{beginDate}
+        AND #{endDate}
+    </select>
 </mapper>

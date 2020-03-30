@@ -185,6 +185,7 @@
                 }
                 console.log(response, file, fileList);
             },
+            // 初始化当前页要展示的日期时调用(翻页)
             initData: function (cur) {
                 var date;
                 var index = 0;   //控制显示预定的天数
@@ -229,16 +230,25 @@
                     this.days.push(dayobject);
                 }
                 this.leftobj = [
-                    { date: 3, number: 100, reservations: 0 },
+                    /*{ date: 3, number: 100, reservations: 0 },
                     { date: 4, number: 200, reservations: 0 },
                     { date: 5, number: 112, reservations: 0 },
                     { date: 6, number: 335, reservations: 0 },
                     { date: 10, number: 300, reservations: 0 },
                     { date: 11, number: 20, reservations: 20 },
                     { date: 12, number: 30, reservations: 30 },
-                    { date: 13, number: 200, reservations: 0 },
+                    { date: 13, number: 200, reservations: 0 },*/
                 ];
-                // 发送ajax请求，获取真实数据
+                // 发送ajax请求，根据当前页面对应的月份查询数据库,封装成相应相应的结果赋值给leftobj用于页面展示
+                var queryDate = this.currentYear + "-" + this.currentMonth;
+                axios.post(this.backend_url+"/ordersetting/getOrderSettingByMonth.do?date="+queryDate)
+                    .then((response) => {
+                        if(response.data.flag){
+                            this.leftobj = response.data.data;
+                        }else{
+                            this.$message.error(response.data.message);
+                        }
+                    });
             },
             goCurrentMonth: function (year, month) {
                 var d = new Date();
