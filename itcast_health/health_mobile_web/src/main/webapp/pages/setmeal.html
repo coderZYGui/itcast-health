@@ -48,11 +48,17 @@
     var vue = new Vue({
         el:'#app',
         data:{
-            img_url:"http://psuyuqoog.bkt.clouddn.com/",
+            img_url:"http://q7xo3ehns.bkt.clouddn.com/",
             mobile_backend_url:"http://localhost:7002/mobile",
             setmealList:[]
         },
         mounted (){
+            axios.get(this.mobile_backend_url+"/setmeal/getSetmealList.do")
+                .then((response)=>{
+                    if (response.data.flag){
+                        this.setmealList = response.data.data;
+                    }
+                });
         }
     });
 </script>

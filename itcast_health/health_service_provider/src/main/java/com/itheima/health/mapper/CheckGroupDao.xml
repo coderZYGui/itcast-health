@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itheima.health.dao.CheckGroupDao">
 
+    <resultMap id="baseMap" type="CheckGroup">
+        <id column="id" property="id"/>
+    </resultMap>
+    <resultMap id="resultCheckGroupMap" type="CheckGroup">
+        <collection property="checkItems" javaType="ArrayList" ofType="CheckItem" column="id"
+            select="com.itheima.health.dao.CheckItemDao.findCheckItemByCheckGroup"/>
+
+    </resultMap>
+
     <!--
      有时候新增一条数据，知道新增成功即可，但是有时候，需要这条新增数据的主键，
         以便逻辑使用，再将其查询出来明显不符合要求，效率也变低了。
@@ -52,6 +61,10 @@
 
     <select id="findAll" resultType="com.itheima.health.pojo.CheckGroup">
         SELECT * FROM t_checkgroup
+    </select>
+    
+    <select id="findCheckGroupBySetmealId" resultMap="resultCheckGroupMap">
+        select * from t_checkgroup where id in (select checkgroup_id from t_setmeal_checkgroup where setmeal_id = #{setmealId});
     </select>
 
 </mapper>

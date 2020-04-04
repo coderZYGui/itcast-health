@@ -49,6 +49,8 @@
         <spring-context-support.version>5.0.5.RELEASE</spring-context-support.version>
         <poi.version>3.14</poi.version>
         <poi-ooxml.version>3.14</poi-ooxml.version>
+        <aliyun-java-sdk-core.version>3.3.1</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-dysmsapi.version>1.0.0</aliyun-java-sdk-dysmsapi.version>
     </properties>
 
     <dependencyManagement>
@@ -240,6 +242,18 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi-ooxml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun-java-sdk-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+                <version>${aliyun-java-sdk-dysmsapi.version}</version>
             </dependency>
 
         </dependencies>

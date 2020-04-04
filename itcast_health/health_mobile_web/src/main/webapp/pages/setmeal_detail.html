@@ -92,7 +92,15 @@
             }
         },
         mounted(){
-
+            axios.get(this.mobile_backend_url+"/setmeal/findById.do?id="+id)
+                .then((response)=>{
+                    if (response.data.flag){
+                        <!-- 根据id来查询到某一个套餐的信息 -->
+                        this.setmeal = response.data.data;
+                        <!-- 用来展示图片的,因为在数据库中不显示域名,所以在这里加上域名 -->
+                        this.imgUrl = "http://q7xo3ehns.bkt.clouddn.com/"+response.data.data.img;
+                    }
+                })
         }
     });
 </script>

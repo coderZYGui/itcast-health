@@ -4,6 +4,8 @@ import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.Setmeal;
 
+import java.util.List;
+
 /**
  * Description: 套餐业务接口
  *
@@ -25,4 +27,19 @@ public interface SetmealService {
      * @return
      */
     PageResult pageQuery(QueryPageBean queryPageBean);
+
+    // ----------------------------下面是移动端的接口===============================
+
+    /**
+     * 查询所有的套餐
+     * @return
+     */
+    List<Setmeal> findAll();
+
+    /**
+     * 根据前台传过来的套餐id, 来查询该套餐
+     * @param id
+     * @return
+     */
+    Setmeal findById(Integer id);
 }
