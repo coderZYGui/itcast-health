@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.health.dao.MemberDao">
+    <select id="findByTelephone" resultType="com.itheima.health.pojo.Member">
+        SELECT * FROM t_member
+        WHERE phoneNumber = #{telephone}
+    </select>
+
+    <insert id="add">
+        INSERT INTO t_member (name, sex, idCard, phoneNumber, regTime)
+        VALUES (#{name}, #{sex}, #{idCard}, #{phoneNumber}, #{regTime})
+        <selectKey resultType="integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+</mapper>
