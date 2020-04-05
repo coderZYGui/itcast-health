@@ -23,4 +23,9 @@
           orderDate BETWEEN #{beginDate}
         AND #{endDate}
     </select>
+
+    <select id="findByOrderDate" resultType="com.itheima.health.pojo.OrderSetting">
+        SELECT * FROM t_ordersetting
+        WHERE orderDate = #{orderDate}
+    </select>
 </mapper>

@@ -40,4 +40,11 @@ public interface OrderSettingDao {
      * @return
      */
     List<OrderSetting> getOrderSettingByMonth(@Param("beginDate") String beginDate, @Param("endDate") String endDate);
+
+    /**
+     * 根据预约日期, 查询是否有预约设置
+     * @param orderDate
+     * @return
+     */
+    OrderSetting findByOrderDate(@Param("orderDate") String orderDate);
 }
