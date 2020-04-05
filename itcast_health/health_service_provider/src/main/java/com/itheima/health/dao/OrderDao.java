@@ -3,6 +3,7 @@ package com.itheima.health.dao;
 import com.itheima.health.pojo.Order;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 订单dao
@@ -24,4 +25,11 @@ public interface OrderDao {
      * @param order
      */
     void add(Order order);
+
+    /**
+     * 基于订单id, 获取订单详情(4个属性)
+     * @param id
+     * @return
+     */
+    Map<String, Object> findById4Detail(Integer id);
 }

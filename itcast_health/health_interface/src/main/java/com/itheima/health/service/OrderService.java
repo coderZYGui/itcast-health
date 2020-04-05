@@ -18,4 +18,11 @@ public interface OrderService {
      * @return
      */
     Result addOrder(Map<String, String> map);
+
+    /**
+     * 根据订单id, 获取订单的信息
+     * @param id
+     * @return 返回前端需要的数据
+     */
+    Map<String, Object> findById4OrderDetail(Integer id);
 }

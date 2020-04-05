@@ -107,4 +107,28 @@ public class OrderServiceImpl implements OrderService {
         // 99(模拟) 表示 订单号
         return new Result(true, MessageConst.ORDER_SUCCESS, order.getId()+"");
     }
+
+    @Override
+    public Map<String, Object> findById4OrderDetail(Integer id) {
+        log.debug(">>>>>> id:{}", id);
+        Map<String, Object> map = orderDao.findById4Detail(id);
+        String strDate = "";
+        try {
+            strDate = DateUtils.parseDate2String((Date) map.get("orderDate"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.debug("##### map:{},{}", map, strDate);
+        // 因为底层用的还是没有转换的日期, 这里覆盖一下
+        map.put("orderDate", strDate);
+
+        /*
+        // 模拟数据
+        map.put("member", "test");
+        map.put("setmeal", "入职套餐");
+        map.put("orderDate", "2020-04-09");
+        map.put("orderType", "微信预约");
+        */
+        return map;
+    }
 }

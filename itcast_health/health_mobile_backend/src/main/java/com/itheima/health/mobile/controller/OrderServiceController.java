@@ -60,4 +60,15 @@ public class OrderServiceController {
             return new Result(false, MessageConst.ACTION_FAIL);
         }
     }
+
+    @RequestMapping("/findById")
+    public Result findById4OrderDetail(Integer id){
+        try {
+            Map<String, Object> map = orderService.findById4OrderDetail(id);
+            return new Result(true, MessageConst.QUERY_ORDER_SUCCESS, map);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.QUERY_ORDER_FAIL);
+        }
+    }
 }

@@ -35,4 +35,12 @@
             select LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <select id="findById4Detail" resultType="java.util.Map">
+        select tmr.`name` member, tsl.`name` setmeal, orderDate, orderType
+        from t_order tor, t_member tmr, t_setmeal tsl
+        where tor.member_id = tmr.id and tor.setmeal_id = tsl.id and tor.id = #{id}
+    </select>
+
+
 </mapper>
