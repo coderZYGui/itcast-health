@@ -139,7 +139,7 @@
                 axios.post(this.mobile_backend_url+"/order/submitOrder.do",this.orderInfo).then((response) => {
                     if(response.data.flag){
                         //预约成功，跳转到预约成功页面
-                        //window.location.href="orderSuccess.html?orderId=" + response.data.data.id;
+                        window.location.href="orderSuccess.html?orderId=" + response.data.data.id;
                     }else{
                         //预约失败，提示预约失败信息
                         this.$message.error(response.data.message);

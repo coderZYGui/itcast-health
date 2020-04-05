@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itheima.health.dao.OrderDao">
 
+
     <!--
         根据预约信息Order中的值,来看用户是否预约过
      -->
@@ -25,4 +26,13 @@
             </if>
         </where>
     </select>
+
+    <insert id="add">
+        INSERT INTO t_order(member_id, orderDate, orderType, orderStatus, setmeal_id)
+        VALUES (#{memberId}, #{orderDate}, #{orderType}, #{orderStatus}, #{setmealId})
+        <!-- 返回订单id -->
+        <selectKey resultType="integer" order="AFTER" keyProperty="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 </mapper>

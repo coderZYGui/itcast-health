@@ -18,4 +18,10 @@ public interface OrderDao {
      * @return
      */
     List<Order> selectByCondition(Order order);
+
+    /**
+     * 保存订单(预约记录)
+     * @param order
+     */
+    void add(Order order);
 }

@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.common.MessageConst;
 import com.itheima.health.common.RedisConst;
 import com.itheima.health.entity.Result;
+import com.itheima.health.pojo.Order;
 import com.itheima.health.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class OrderServiceController {
             if (codeInRedis == null || !codeInRedis.equals(code)){
                 return new Result(false, MessageConst.VALIDATECODE_ERROR);
             }
+
+            map.put("orderType", Order.ORDERTYPE_WEIXIN);
+
             // 调用service
             Result result = orderService.addOrder(map);
             // 发送通知

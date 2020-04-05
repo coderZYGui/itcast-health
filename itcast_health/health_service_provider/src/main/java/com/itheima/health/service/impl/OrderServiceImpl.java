@@ -42,6 +42,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result addOrder(Map<String, String> map) {
         log.debug(">>>>> map:{}", map);
+        Date orderDate = null;
+        try {
+            orderDate = DateUtils.parseString2Date(map.get("orderDate"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // 根据预约日期, 判断是否有预约设置
         OrderSetting orderSetting = orderSettingDao.findByOrderDate(map.get("orderDate"));
@@ -72,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
             order.setMemberId(member.getId());
             // 验证会员再某一天的预约时间; 将前台预约输入的日期,转为日期对象,设置给预约订单中的日期
             try {
-                order.setOrderDate(DateUtils.parseString2Date(map.get("orderDate")));
+                order.setOrderDate(orderDate);
             } catch (Exception e) {
                 e.printStackTrace();
                 return new Result(false, "预约日期不正确!");
@@ -85,7 +91,20 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
+        // 保存订单
+        Order order = new Order();
+        order.setOrderDate(orderDate);
+        order.setMemberId(member.getId());
+        order.setSetmealId(Integer.parseInt(map.get("setmealId")));
+        order.setOrderStatus(Order.ORDERSTATUS_NO);
+        order.setOrderType(map.get("orderType"));
+        orderDao.add(order);
+
+        // 更新预约设置
+        orderSetting.setReservations(orderSetting.getReservations()+1);
+        orderSettingDao.editReservationByOrderDate(orderSetting);
+
         // 99(模拟) 表示 订单号
-        return new Result(true, MessageConst.ORDER_SUCCESS, "99");
+        return new Result(true, MessageConst.ORDER_SUCCESS, order.getId()+"");
     }
 }

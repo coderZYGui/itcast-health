@@ -28,4 +28,11 @@
         SELECT * FROM t_ordersetting
         WHERE orderDate = #{orderDate}
     </select>
+
+    <update id="editReservationByOrderDate" parameterType="orderSetting">
+        UPDATE t_ordersetting
+        SET reservations = #{reservations}
+        WHERE orderDate = #{orderDate}
+    </update>
+
 </mapper>

@@ -47,4 +47,10 @@ public interface OrderSettingDao {
      * @return
      */
     OrderSetting findByOrderDate(@Param("orderDate") String orderDate);
+
+    /**
+     * 根据预约日期更新 该日期的预约人数
+     * @param orderSetting
+     */
+    void editReservationByOrderDate(OrderSetting orderSetting);
 }
