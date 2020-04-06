@@ -15,6 +15,7 @@
         <module>health_oms_backend</module>
         <module>health_oms_web</module>
         <module>health_jobs</module>
+        <module>health_security</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,6 +52,8 @@
         <poi-ooxml.version>3.14</poi-ooxml.version>
         <aliyun-java-sdk-core.version>3.3.1</aliyun-java-sdk-core.version>
         <aliyun-java-sdk-dysmsapi.version>1.0.0</aliyun-java-sdk-dysmsapi.version>
+        <spring-security-web.version>5.0.5.RELEASE</spring-security-web.version>
+        <spring-security-config.version>5.0.5.RELEASE</spring-security-config.version>
     </properties>
 
     <dependencyManagement>
@@ -254,6 +257,17 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
                 <version>${aliyun-java-sdk-dysmsapi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security-web.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring-security-config.version}</version>
             </dependency>
 
         </dependencies>

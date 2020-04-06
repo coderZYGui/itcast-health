@@ -42,4 +42,21 @@ public class ValidateCodeController {
             return new Result(false, MessageConst.VALIDATECODE_ERROR);
         }
     }
+
+    @RequestMapping("/send4Login")
+    public Result send4Login(String telephone){
+        try {
+            // 生成验证码
+            String code = ValidateCodeUtils.generateValidateCode(6).toString();
+            // 第三方发送验证码
+            SMSUtils.sendShortMessage(telephone, code);
+            log.debug("code:{}", code);
+            // 将验证码存入redis
+            jedisPool.getResource().setex(telephone+RedisConst.SENDTYPE_LOGIN, 5*60, code);
+            return new Result(true, MessageConst.SEND_VALIDATECODE_SUCCESS);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.SEND_VALIDATECODE_FAIL);
+        }
+    }
 }
