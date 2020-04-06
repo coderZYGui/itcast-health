@@ -62,4 +62,7 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
+    <!-- 在spring-security.xml文件中开启权限注解支持 -->
+    <security:global-method-security pre-post-annotations="enabled"/>
+
 </beans>
