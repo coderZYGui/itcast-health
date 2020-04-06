@@ -44,16 +44,21 @@
         <security:csrf disabled="true"/>
     </security:http>
 
+    <bean class="com.itheima.health.security.SecurityUserDetailsService" id="securityUserDetailsService"/>
+
     <!-- 配置认证、权限-->
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:user-service>
-                <!--<security:user name="admin" authorities="ROLE_ADMIN" password="{noop}123"/>-->
-                <!--<security:user name="zhangsan" authorities="ROLE_READER" password="{noop}456"/>-->
+        <!--
+         我们要从数据库动态查询用户信息，就必须按照spring security框架的要求提供一个实现UserDetailsService接口的实现类
+         -->
+        <security:authentication-provider user-service-ref="securityUserDetailsService">
+            <!--<security:user-service>
+                &lt;!&ndash;<security:user name="admin" authorities="ROLE_ADMIN" password="{noop}123"/>&ndash;&gt;
+                &lt;!&ndash;<security:user name="zhangsan" authorities="ROLE_READER" password="{noop}456"/>&ndash;&gt;
                 <security:user name="admin" authorities="ROLE_ADMIN,add,find,update,delete" password="{noop}123"/>
                 <security:user name="zhangsan" authorities="ROLE_READER,find" password="{noop}123"/>
                 <security:user name="lisi" authorities="ROLE_OMS,add,update" password="{noop}123"/>
-            </security:user-service>
+            </security:user-service>-->
         </security:authentication-provider>
     </security:authentication-manager>
 
