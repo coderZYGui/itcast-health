@@ -35,6 +35,12 @@
                              default-target-url="/main.jsp"
                              login-processing-url="/user/login.do"
                              authentication-failure-url="/login-fail.jsp"/>
+
+        <!-- 登出-->
+        <security:logout logout-url="/zy/logout.do"
+                         logout-success-url="/login.jsp"
+                         invalidate-session="true"/>
+
         <!--访问拒绝处理器(授权失败跳转)-->
         <security:access-denied-handler error-page="/auth-fail.jsp"/>
         <!--
@@ -44,7 +50,10 @@
         <security:csrf disabled="true"/>
     </security:http>
 
+    <!-- 使用Spirng IoC构建UserDetailService对象 -->
     <bean class="com.itheima.health.security.SecurityUserDetailsService" id="securityUserDetailsService"/>
+    <!--配置密码加密对象-->
+    <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"/>
 
     <!-- 配置认证、权限-->
     <security:authentication-manager>
@@ -59,6 +68,7 @@
                 <security:user name="zhangsan" authorities="ROLE_READER,find" password="{noop}123"/>
                 <security:user name="lisi" authorities="ROLE_OMS,add,update" password="{noop}123"/>
             </security:user-service>-->
+            <security:password-encoder ref="passwordEncoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
 
