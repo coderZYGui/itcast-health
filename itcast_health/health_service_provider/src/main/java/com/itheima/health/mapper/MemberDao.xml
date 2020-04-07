@@ -13,4 +13,13 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <select id="findMemberCountByMonth" resultType="integer">
+        SELECT
+              count(*)
+        FROM
+              t_member
+        WHERE
+              regTime &lt;= #{month}
+    </select>
 </mapper>
