@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/3/22 10:10
  */
 @RestController // 等于 @Controller + @ResponseBody
-@RequestMapping("/web/user")
+@RequestMapping("/user")
 public class UserController {
 
     @Reference
@@ -33,5 +33,15 @@ public class UserController {
             e.printStackTrace();
         }
         return new Result(false, MessageConst.ACTION_FAIL);
+    }
+
+    @RequestMapping("/loginSuccess")
+    public Result loginSuccess(){
+        return new Result(true, MessageConst.LOGIN_SUCCESS);
+    }
+
+    @RequestMapping("/loginFail")
+    public Result loginFail(){
+        return new Result(false, "登陆失败");
     }
 }
