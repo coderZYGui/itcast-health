@@ -1,8 +1,10 @@
 package com.itheima.health.security;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.pojo.Permission;
 import com.itheima.health.pojo.Role;
 import com.itheima.health.pojo.User;
+import com.itheima.health.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +25,9 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Reference
+    private UserService userService;
 
     // 模拟数据库的用户记录，如下User类是health_common中的自定义实体类User
     // 修改Role、Permission，为其增加不带参、带参构造方法
@@ -63,26 +68,32 @@ public class SecurityUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 模拟从数据库读取用户信息
-        User user = userDb.get(username);
+        // User user = userDb.get(username);
+
+        // 通过UserService,获取用户信息(基本信息,角色信息,权限信息)
+        User user = userService.findUserName(username);
+
         if (user == null) {
             return null;
         }
         // 获取用户角色及权限
         List<GrantedAuthority> authorityList = new ArrayList<>();
         for (Role role : user.getRoles()) {
-            // 角色关键词
+            // 把角色关键词添加到权限列表
             authorityList.add(new SimpleGrantedAuthority(role.getKeyword()));
             for (Permission permission : role.getPermissions()) {
-                // 把权限放入列表
+                // 把权限关键词放入权限列表
                 authorityList.add(new SimpleGrantedAuthority(permission.getKeyword()));
             }
         }
         // 封装成UserDetail对象
         // 必须是加密的密码, 无加密, 默认在前面加 {noop}
-        // String authPassword = "{noop}" + user.getPassword();
-        String authPassword = passwordEncoder.encode(user.getPassword());
-        System.out.println("加密后:"+ authPassword);
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, authPassword, authorityList);
+        // 如果数据库中的密码已经加密, 则不用使用再加密了
+        //String authPassword = passwordEncoder.encode(user.getPassword());
+        String passwordInDb = user.getPassword();
+        System.out.println("加密后:" + passwordInDb);
+        System.out.println("authorityList:" + authorityList);
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, passwordInDb, authorityList);
         return userDetails;
     }
 }

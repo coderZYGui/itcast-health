@@ -17,8 +17,8 @@
                              authentication-failure-forward-url="/user/loginFail.do"/>
 
         <!-- 登出-->
-        <security:logout logout-url="/zy/logout.do"
-                         logout-success-url="/login.jsp"
+        <security:logout logout-url="/sec/logout.do"
+                         logout-success-url="http://localhost:8080/pages/login.html"
                          invalidate-session="true"/>
 
         <!--访问拒绝处理器(授权失败跳转)-->

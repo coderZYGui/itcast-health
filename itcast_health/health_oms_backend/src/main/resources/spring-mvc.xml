@@ -13,7 +13,7 @@
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- IoC注解解析器-->
-    <context:component-scan base-package="com.itheima.health.controller"/>
+    <context:component-scan base-package="com.itheima.health"/>
 
     <!-- 支持跨域 -->
     <mvc:cors>
@@ -43,7 +43,7 @@
     <!--dubbo配置-->
     <dubbo:application name="dubbo-oms-consumer"/>
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
-    <dubbo:annotation package="com.itheima.health.controller"/>
+    <dubbo:annotation package="com.itheima.health"/>
 
     <!--文件上传组件-->
     <bean id="multipartResolver"
