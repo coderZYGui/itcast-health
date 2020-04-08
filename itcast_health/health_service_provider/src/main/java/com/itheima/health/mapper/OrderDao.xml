@@ -41,6 +41,12 @@
         from t_order tor, t_member tmr, t_setmeal tsl
         where tor.member_id = tmr.id and tor.setmeal_id = tsl.id and tor.id = #{id}
     </select>
+    <select id="findSetmealCount" resultType="java.util.Map">
+        select t.name , count(*) value
+        from t_setmeal t, t_order o
+        where t.id = o.setmeal_id
+        GROUP BY t.name
+    </select>
 
 
 </mapper>

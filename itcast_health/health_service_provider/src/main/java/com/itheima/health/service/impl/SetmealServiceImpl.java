@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.itheima.health.common.RedisConst;
+import com.itheima.health.dao.OrderDao;
 import com.itheima.health.dao.SetmealDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
@@ -33,6 +34,9 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Autowired
     private JedisPool jedisPool;
+
+    @Autowired
+    private OrderDao orderDao;
 
     @Transactional
     @Override
@@ -71,5 +75,32 @@ public class SetmealServiceImpl implements SetmealService {
     public Setmeal findById(Integer id) {
         log.debug("根据id为的套餐信息:{}"+id);
         return setmealDao.findById(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> findSetmealCount() {
+
+        List<Map<String, Object>> mapList = orderDao.findSetmealCount();
+
+        /*
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("name", "套餐1");
+        map1.put("value", 10);
+
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("name", "套餐2");
+        map2.put("value", 20);
+
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("name", "套餐3");
+        map3.put("value", 30);
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        mapList.add(map1);
+        mapList.add(map2);
+        mapList.add(map3);
+        */
+
+        return mapList;
     }
 }

@@ -32,4 +32,10 @@ public interface OrderDao {
      * @return
      */
     Map<String, Object> findById4Detail(Integer id);
+
+    /**
+     * 获取套餐占比
+     * @return
+     */
+    List<Map<String, Object>> findSetmealCount();
 }

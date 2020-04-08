@@ -5,6 +5,7 @@ import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 套餐业务接口
@@ -42,4 +43,10 @@ public interface SetmealService {
      * @return
      */
     Setmeal findById(Integer id);
+
+    /**
+     * 查询各个套餐的预约数量,并存入List中
+     * @return 返回一个List集合(存放 套餐和预约套餐人数)
+     */
+    List<Map<String, Object>> findSetmealCount();
 }

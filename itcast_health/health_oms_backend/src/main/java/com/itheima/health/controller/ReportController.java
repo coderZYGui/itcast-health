@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.common.MessageConst;
 import com.itheima.health.entity.Result;
 import com.itheima.health.service.ReportService;
+import com.itheima.health.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,9 @@ public class ReportController {
 
     @Reference
     private ReportService reportService;
+
+    @Reference
+    private SetmealService setmealService;
 
     /**
      * 获取前12个月,每月会员累计注册量
@@ -59,6 +63,30 @@ public class ReportController {
             resultMap.put("memberCount", memberCount);
             return new Result(true, MessageConst.ACTION_SUCCESS, resultMap);
         } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.ACTION_FAIL);
+        }
+    }
+
+    @RequestMapping("/getSetmealReport")
+    public Result getSetmealReport(){
+        try {
+            // 通过service获取各个套餐的预约数量
+            List<Map<String, Object>> mapList = setmealService.findSetmealCount();
+            // 返回数据
+            // 封装套餐名称列表
+            List<String> setmealNames = new ArrayList<>();
+            // 循环遍历List,取出map中的name值, 存入setmealNames
+            for (Map<String, Object> map : mapList) {
+                setmealNames.add(map.get("name").toString());
+            }
+
+            // 将 mapList 和 setmealNames一起返回给前端
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("setmealNames", setmealNames);
+            resultMap.put("setmealCount", mapList);
+            return new Result(true, MessageConst.ACTION_SUCCESS, resultMap);
+        }catch (Exception e){
             e.printStackTrace();
             return new Result(false, MessageConst.ACTION_FAIL);
         }
