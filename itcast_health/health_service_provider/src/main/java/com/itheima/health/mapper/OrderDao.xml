@@ -48,5 +48,27 @@
         GROUP BY t.name
     </select>
 
+    <select id="totalOrderByDate" resultType="java.lang.Integer">
+        select count(*) from t_order where orderDate = #{date}
+    </select>
+
+    <select id="totalOrderByAfterDate" resultType="java.lang.Integer">
+        select count(*) from t_order where orderDate &gt;=#{date}
+    </select>
+    <select id="totalVisitByDate" resultType="java.lang.Integer">
+        select count(*) from t_order where orderDate = #{date} and orderStatus = '已到诊'
+    </select>
+    <select id="totalVisitByAfterDate" resultType="java.lang.Integer">
+        select count(*) from t_order where orderDate &gt;= #{date} and orderStatus = '已到诊'
+    </select>
+    <select id="getHotSetmeal" resultType="java.util.Map">
+        select t.name, count(*) setmeal_count, count(*)/(select count(*) from t_order) proportion
+        from t_order o, t_setmeal t
+        where o.setmeal_id = t.id
+        group by t.name
+        order by setmeal_count DESC
+        limit 0,4
+    </select>
+
 
 </mapper>

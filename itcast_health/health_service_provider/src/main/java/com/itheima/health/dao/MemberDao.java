@@ -31,4 +31,22 @@ public interface MemberDao {
      */
     Integer findMemberCountByMonth(@Param("month") String month);
 
+    /**
+     * 统计会员总数量
+     * @return
+     */
+    Integer totalMemberCount();
+
+    /**
+     * 统计某一日期会员注册数量
+     * @return
+     */
+    Integer totalMemberCountByDate(@Param("date") String date);
+
+    /**
+     * 统计某一日期之后(到今日)会员注册数量
+     * @return
+     */
+    Integer totalMemberCountAfterDate(@Param("date") String date);
+
 }

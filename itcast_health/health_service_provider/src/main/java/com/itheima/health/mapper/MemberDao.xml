@@ -22,4 +22,18 @@
         WHERE
               regTime &lt;= #{month}
     </select>
+
+    <select id="totalMemberCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_member;
+    </select>
+
+    <select id="totalMemberCountByDate" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_member
+        WHERE regTime = #{date}
+    </select>
+
+    <select id="totalMemberCountAfterDate" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_member
+        WHERE regTime &gt;= #{date}
+    </select>
 </mapper>

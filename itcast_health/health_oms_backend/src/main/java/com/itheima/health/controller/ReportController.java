@@ -91,4 +91,15 @@ public class ReportController {
             return new Result(false, MessageConst.ACTION_FAIL);
         }
     }
+
+    @RequestMapping("/getBusinessReportData")
+    public Result getBusinessReportData(){
+        try {
+            Map<String, Object> map = reportService.getBusinessReportData();
+            return new Result(true, MessageConst.ACTION_SUCCESS, map);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.ACTION_FAIL);
+        }
+    }
 }
