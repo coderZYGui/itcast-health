@@ -6,9 +6,16 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.service.ReportService;
 import com.itheima.health.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -97,6 +104,98 @@ public class ReportController {
         try {
             Map<String, Object> map = reportService.getBusinessReportData();
             return new Result(true, MessageConst.ACTION_SUCCESS, map);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConst.ACTION_FAIL);
+        }
+    }
+
+    @RequestMapping("/exportBusinessReport")
+    public Result exportBusinessReport(HttpServletResponse response){
+        try {
+            // 通过service获取元数据
+            Map<String, Object> reportData = reportService.getBusinessReportData();
+            log.debug(">>>>>> reportData:{}", reportData);
+            // 把数据写入excel
+            // 先读取excel
+            InputStream inputStream = this.getClass().getResourceAsStream("/report_template.xlsx");
+            // 构建excel对象
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(inputStream);
+            // 读取sheet
+            XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
+            // 读取Row
+            XSSFRow row = sheet.getRow(2);
+
+            // ---------------------------------将运营数据都保存到excel对象中-------------------------------------------
+            // 读取cell
+            // 设置报表日期
+            row.getCell(5).setCellValue(reportData.get("reportDate").toString());
+
+            // 获取会员相关数据
+            Integer todayNewMember = (Integer)reportData.get("todayNewMember");
+            Integer thisWeekNewMember = (Integer)reportData.get("thisWeekNewMember");
+            Integer thisMonthNewMember = (Integer)reportData.get("thisMonthNewMember");
+            Integer totalMember = (Integer)reportData.get("totalMember");
+            // 获取预约相关数据
+            Integer todayOrderNumber = (Integer)reportData.get("todayOrderNumber");
+            Integer thisWeekOrderNumber = (Integer)reportData.get("thisWeekOrderNumber");
+            Integer thisMonthOrderNumber = (Integer)reportData.get("thisMonthOrderNumber");
+            // 获取到诊相关数据
+            Integer todayVisitsNumber = (Integer)reportData.get("todayVisitsNumber");
+            Integer thisWeekVisitsNumber = (Integer)reportData.get("thisWeekVisitsNumber");
+            Integer thisMonthVisitsNumber = (Integer)reportData.get("thisMonthVisitsNumber");
+            // 获取新增会员及会员总数行
+            row = sheet.getRow(4);
+            row.getCell(5).setCellValue(todayNewMember);
+            row.getCell(7).setCellValue(totalMember);
+
+            // 获取本周新增会员及本月新增会员行
+            row = sheet.getRow(5);
+
+            row.getCell(5).setCellValue(thisWeekNewMember);
+            row.getCell(7).setCellValue(thisMonthNewMember);
+
+            // 获取今日预约及到诊数行
+            row = sheet.getRow(7);
+            row.getCell(5).setCellValue(todayOrderNumber);
+            row.getCell(7).setCellValue(todayVisitsNumber);
+
+            // 获取本周预约及本周到诊行
+            row = sheet.getRow(8);
+            row.getCell(5).setCellValue(thisWeekOrderNumber);
+            row.getCell(7).setCellValue(thisWeekVisitsNumber);
+
+            // 获取本月预约及本月到诊行
+            row = sheet.getRow(9);
+            row.getCell(5).setCellValue(thisMonthOrderNumber);
+            row.getCell(7).setCellValue(thisMonthVisitsNumber);
+
+            // 设置热门套餐
+            int rowNum = 12;
+            List<Map<String, Object>> hotSetmealList = (List<Map<String, Object>>) reportData.get("hotSetmeal");
+            for (Map<String, Object> map : hotSetmealList) {
+                String name = (String) map.get("name");
+                Long setmealCount = (Long) map.get("setmeal_count");
+                BigDecimal proportion = (BigDecimal) map.get("proportion");
+                row = sheet.getRow(rowNum);
+                row.getCell(4).setCellValue(name);
+                row.getCell(5).setCellValue(setmealCount);
+                row.getCell(6).setCellValue(proportion.doubleValue());
+                rowNum++;
+            }
+
+            // ----------------------------------------------------------------------------
+
+            // 通过流下载excel
+            // 获取服务器到客户端的响应流(使用HttpServletResponse)
+            ServletOutputStream outputStream = response.getOutputStream();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("content-Disposition","attachment;filename="+reportData+"_report.xlsx");
+            xssfWorkbook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+            xssfWorkbook.close();
+            return null;
         } catch (Exception e){
             e.printStackTrace();
             return new Result(false, MessageConst.ACTION_FAIL);
