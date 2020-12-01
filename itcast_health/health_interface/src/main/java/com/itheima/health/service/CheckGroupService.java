@@ -55,4 +55,10 @@ public interface CheckGroupService {
      * @return
      */
     List<CheckGroup> findAll();
+
+    /**
+     * 根据检查组id, 删除检查组信息(并删除它和检查项的关系)
+     * @param groupId
+     */
+    void deleteGroupById(Integer groupId);
 }

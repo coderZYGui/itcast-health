@@ -37,7 +37,7 @@
         SELECT * FROM t_checkitem;
     </select>
 
-    <select id= "findCheckItemByCheckGroup" resultType="CheckItem">
+    <select id="findCheckItemByCheckGroup" resultType="CheckItem">
         select * from t_checkitem where id in (select checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{id});
     </select>
 

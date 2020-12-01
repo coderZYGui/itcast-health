@@ -26,7 +26,7 @@ public interface CheckGroupDao {
      * K - V
      * @param map
      */
-    void addCheckGroupAndCheckItem(Map map);
+    void addCheckGroupAndCheckItem(Map<String, Integer> map);
 
     /**
      * 根据查询条件来对检查组进行分页
@@ -66,4 +66,6 @@ public interface CheckGroupDao {
      * @return
      */
     List<CheckGroup> findAll();
+
+    void deleteGroup(Integer groupId);
 }

@@ -8,7 +8,6 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +30,7 @@ public class CheckItemController {
     @Reference
     private CheckItemService checkItemService;
 
-    @PreAuthorize("hasAuthority('CHECKITEM_ADD')")//权限校验
+    //@PreAuthorize("hasAuthority('CHECKITEM_ADD')")//权限校验
     @RequestMapping("/add")
     // @RequestBody是将前台传过来的JSON数据转为Java对象
     // 用来接收表单的数据
@@ -49,7 +48,7 @@ public class CheckItemController {
         }
     }
 
-    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
+    //@PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     @RequestMapping("/findPage")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
         try {
@@ -61,7 +60,7 @@ public class CheckItemController {
         return new PageResult(0L, new ArrayList());
     }
 
-    @PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
+    //@PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
     @RequestMapping("/delete")
     public Result delete(Integer id) {
         log.debug("delete id:{}", id);
@@ -74,7 +73,7 @@ public class CheckItemController {
         }
     }
 
-    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
+    //@PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     @RequestMapping("/findById")
     public Result findById(Integer id) {
         log.debug("findById id:{}", id);
@@ -87,7 +86,7 @@ public class CheckItemController {
         }
     }
 
-    @PreAuthorize("hasAuthority('CHECKITEM_EDIT')")
+    //@PreAuthorize("hasAuthority('CHECKITEM_EDIT')")
     @RequestMapping("/edit")
     public Result edit(@RequestBody  CheckItem checkItem){
         try{
@@ -103,7 +102,7 @@ public class CheckItemController {
         }
     }
 
-    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
+    //@PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     @RequestMapping("/findAll")
     public Result findAll(){
         try {

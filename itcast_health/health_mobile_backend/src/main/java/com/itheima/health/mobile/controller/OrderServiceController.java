@@ -2,7 +2,6 @@ package com.itheima.health.mobile.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.common.MessageConst;
-import com.itheima.health.common.RedisConst;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Order;
 import com.itheima.health.service.OrderService;
@@ -42,10 +41,10 @@ public class OrderServiceController {
             String code = map.get("validateCode");
             log.debug(">>>>>> telephone:{}, code:{}", telephone, code);
             // 验证短信
-            String codeInRedis = jedisPool.getResource().get(telephone+ RedisConst.SENDTYPE_ORDER);
-            if (codeInRedis == null || !codeInRedis.equals(code)){
-                return new Result(false, MessageConst.VALIDATECODE_ERROR);
-            }
+//            String codeInRedis = jedisPool.getResource().get(telephone+ RedisConst.SENDTYPE_ORDER);
+//            if (codeInRedis == null || !codeInRedis.equals(code)){
+//                return new Result(false, MessageConst.VALIDATECODE_ERROR);
+//            }
 
             map.put("orderType", Order.ORDERTYPE_WEIXIN);
 

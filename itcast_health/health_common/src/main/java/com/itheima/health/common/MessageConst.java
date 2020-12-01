@@ -33,7 +33,7 @@ public class MessageConst {
     public static final String IMPORT_ORDERSETTING_FAIL = "批量导入预约设置数据失败";
     public static final String IMPORT_ORDERSETTING_SUCCESS = "批量导入预约设置数据成功";
     public static final String GET_ORDERSETTING_SUCCESS = "获取预约设置数据成功";
-    public static final String GET_ORDERSETTING_FAIL = "获取预约设置数据失败";
+    public static final String GET_ORDERSETTING_FAIL = "获取预约设置数据失败, 今天不能预约";
     public static final String ORDERSETTING_SUCCESS = "预约设置成功";
     public static final String ORDERSETTING_FAIL = "预约设置失败";
     public static final String ADD_MEMBER_FAIL = "新增会员失败";

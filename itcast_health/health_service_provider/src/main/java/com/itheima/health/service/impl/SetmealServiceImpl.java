@@ -73,7 +73,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Override
     public Setmeal findById(Integer id) {
-        log.debug("根据id为的套餐信息:{}"+id);
+        log.debug("根据id为的套餐信息:{}" + id);
         return setmealDao.findById(id);
     }
 

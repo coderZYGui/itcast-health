@@ -7,9 +7,7 @@ import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckGroup;
 import com.itheima.health.service.CheckGroupService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,5 +93,11 @@ public class CheckGroupController {
             e.printStackTrace();
             return new Result(false, MessageConst.QUERY_CHECKGROUP_FAIL);
         }
+    }
+
+    @DeleteMapping("/deleteGroup/{groupId}")
+    public Result deleteGroupById(@PathVariable("groupId") Integer groupId) {
+        checkGroupService.deleteGroupById(groupId);
+        return null;
     }
 }

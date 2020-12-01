@@ -42,7 +42,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         //   31           30
         // 遍历选择的检查项列表,逐个添加到检查组检查项关系表中
         for (Integer checkItemId : checkItemIds) {
-            Map map = new HashMap<>();
+            Map<String, Integer> map = new HashMap<>();
             map.put("checkgroup_id", checkGroup.getId());
             map.put("checkitem_id", checkItemId);
             checkGroupDao.addCheckGroupAndCheckItem(map);
@@ -77,8 +77,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         checkItemIds.add(28);
         checkItemIds.add(29);
         checkItemIds.add(30);*/
-        List<Integer> checkItemIds = checkGroupDao.findCheckItemIdsByCheckGroupId(id);
-        return checkItemIds;
+        return checkGroupDao.findCheckItemIdsByCheckGroupId(id);
     }
 
     @Transactional
@@ -91,9 +90,10 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         checkGroupDao.deleteCheckItemsListByCheckGroupId(checkGroup.getId());
         // 保存新的关系
         for (Integer checkItemId : checkItemIds) {
-            Map map = new HashMap();
+            Map<String, Integer> map = new HashMap<>();
             map.put("checkgroup_id", checkGroup.getId());
             map.put("checkitem_id", checkItemId);
+            // 添加新的关联关系
             checkGroupDao.addCheckGroupAndCheckItem(map);
         }
     }
@@ -101,5 +101,14 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     @Override
     public List<CheckGroup> findAll() {
         return checkGroupDao.findAll();
+    }
+
+    @Transactional
+    @Override
+    public void deleteGroupById(Integer groupId) {
+        // 根据检查组的id, 去中间表中删除它和检查项的关系
+        checkGroupDao.deleteCheckItemsListByCheckGroupId(groupId);
+        // 然后再删除检查组的信息
+        checkGroupDao.deleteGroup(groupId);
     }
 }
