@@ -34,11 +34,12 @@ public class OrderServiceController {
 
     /**
      * 提交预约订单
+     *
      * @param map
      * @return
      */
     @RequestMapping("/submitOrder")
-    public Result submitOrder(@RequestBody Map<String, String> map){
+    public Result submitOrder(@RequestBody Map<String, String> map) {
 
         try {
             // 获取手机号, 获取验证码
@@ -59,18 +60,18 @@ public class OrderServiceController {
             log.debug("############# 发送短信通知预约人");
             return result;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConst.ACTION_FAIL);
         }
     }
 
     @RequestMapping("/findById")
-    public Result findById4OrderDetail(Integer id){
+    public Result findById4OrderDetail(Integer id) {
         try {
             Map<String, Object> map = orderService.findById4OrderDetail(id);
             return new Result(true, MessageConst.QUERY_ORDER_SUCCESS, map);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConst.QUERY_ORDER_FAIL);
         }
