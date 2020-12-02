@@ -31,6 +31,11 @@ public class MemberController {
     @Autowired
     private JedisPool jedisPool;
 
+    /**
+     * 短信登录控制器
+     * @param map
+     * @return
+     */
     @RequestMapping("/smsLogin")
     // 因为没有提供对应的Pojo类来接收前端传过来的手机号和验证码,所以使用map接收
     public Result smsLogin(@RequestBody Map<String, String> map){

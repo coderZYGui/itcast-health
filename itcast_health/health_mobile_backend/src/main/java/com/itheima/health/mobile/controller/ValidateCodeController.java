@@ -26,6 +26,11 @@ public class ValidateCodeController {
     @Autowired
     private JedisPool jedisPool;
 
+    /**
+     * 提交预约订单的时候的4位验证码
+     * @param telephone
+     * @return
+     */
     @RequestMapping("/send4Order")
     public Result send4Order(String telephone) {
         try {
@@ -43,6 +48,11 @@ public class ValidateCodeController {
         }
     }
 
+    /**
+     * 用来登录时, 使用的6位验证码
+     * @param telephone
+     * @return
+     */
     @RequestMapping("/send4Login")
     public Result send4Login(String telephone){
         try {
