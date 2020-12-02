@@ -32,6 +32,11 @@ public class OrderServiceController {
     @Reference
     private OrderService orderService;
 
+    /**
+     * 提交预约订单
+     * @param map
+     * @return
+     */
     @RequestMapping("/submitOrder")
     public Result submitOrder(@RequestBody Map<String, String> map){
 
@@ -48,7 +53,7 @@ public class OrderServiceController {
 
             map.put("orderType", Order.ORDERTYPE_WEIXIN);
 
-            // 调用service
+            // 调用service, 添加订单
             Result result = orderService.addOrder(map);
             // 发送通知
             log.debug("############# 发送短信通知预约人");

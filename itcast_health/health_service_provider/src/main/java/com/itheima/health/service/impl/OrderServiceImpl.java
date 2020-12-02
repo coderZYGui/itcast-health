@@ -72,11 +72,12 @@ public class OrderServiceImpl implements OrderService {
             member.setRegTime(new Date());
             memberDao.add(member);
         } else {
+            // 是会员, 查询当前用户是否同一天都有预约了
             // 基于条件组合查询, 查询该用户同一天是否有预约了
             Order order = new Order();
             // 验证会员的id
             order.setMemberId(member.getId());
-            // 验证会员再某一天的预约时间; 将前台预约输入的日期,转为日期对象,设置给预约订单中的日期
+            // 验证会员在某一天的预约时间; 将前台预约输入的日期,转为日期对象,设置给预约订单中的日期
             try {
                 order.setOrderDate(orderDate);
             } catch (Exception e) {
@@ -101,11 +102,12 @@ public class OrderServiceImpl implements OrderService {
         orderDao.add(order);
 
         // 更新预约设置
-        orderSetting.setReservations(orderSetting.getReservations()+1);
+        orderSetting.setReservations(orderSetting.getReservations() + 1);
+        // 根据预约日期更新 该日期的预约人数
         orderSettingDao.editReservationByOrderDate(orderSetting);
 
         // 99(模拟) 表示 订单号
-        return new Result(true, MessageConst.ORDER_SUCCESS, order.getId()+"");
+        return new Result(true, MessageConst.ORDER_SUCCESS, order);
     }
 
     @Override
@@ -122,13 +124,15 @@ public class OrderServiceImpl implements OrderService {
         // 因为底层用的还是没有转换的日期, 这里覆盖一下
         map.put("orderDate", strDate);
 
-        /*
+/*
+        // 模拟数据
+        Map<String, Object> map = new HashMap<>();
+
         // 模拟数据
         map.put("member", "test");
         map.put("setmeal", "入职套餐");
         map.put("orderDate", "2020-04-09");
-        map.put("orderType", "微信预约");
-        */
+        map.put("orderType", "微信预约");*/
         return map;
     }
 }
