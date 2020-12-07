@@ -11,6 +11,7 @@ import com.itheima.health.service.SetmealService;
 import com.itheima.health.utils.QiniuUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,6 +81,7 @@ public class SetmealController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('SETMEAL_QUERY')")
     @RequestMapping("/findPage")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult pageResult = null;

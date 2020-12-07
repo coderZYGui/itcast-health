@@ -14,9 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用于替代 在 spring-security配置文件中配置的角色及权限
@@ -31,7 +29,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     // 模拟数据库的用户记录，如下User类是health_common中的自定义实体类User
     // 修改Role、Permission，为其增加不带参、带参构造方法
-    private static Map<String, User> userDb = new HashMap();
+/*    private static Map<String, User> userDb = new HashMap();
 
     static {
         User user1 = new User();
@@ -63,7 +61,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
         role3.getPermissions().add(new Permission("更新权限", "update"));
         userLisi.getRoles().add(role3);
         userDb.put(userLisi.getUsername(), userLisi);
-    }
+    }*/
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -93,7 +91,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
         String passwordInDb = user.getPassword();
         System.out.println("加密后:" + passwordInDb);
         System.out.println("authorityList:" + authorityList);
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, passwordInDb, authorityList);
-        return userDetails;
+        return new org.springframework.security.core.userdetails.User(username, passwordInDb, authorityList);
     }
 }
