@@ -48,7 +48,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Map<String, Object> getBusinessReportData() {
-        Map<String,Object> reportData = new HashMap<>();
+        Map<String, Object> reportData = new HashMap<>();
 
         // 今日,本周,本月
         Date date = DateUtils.getToday();
@@ -63,26 +63,29 @@ public class ReportServiceImpl implements ReportService {
             strWeekDay = DateUtils.parseDate2String(weekDay);
             strMonthFirstDay = DateUtils.parseDate2String(monthFirstDay);
             log.debug(">>>>>>>>>>>: strDate:{},strWeekDay:{},strMonthFirstDay:{}", strDate, strWeekDay, strMonthFirstDay);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        reportData.put("reportDate",strDate);
+        reportData.put("reportDate", strDate);
         // 会员人数相关数据
-        reportData.put("todayNewMember",memberDao.totalMemberCountByDate(strDate));
-        reportData.put("thisWeekNewMember",memberDao.totalMemberCountAfterDate(strWeekDay));
-        reportData.put("thisMonthNewMember",memberDao.totalMemberCountAfterDate(strMonthFirstDay));
-        reportData.put("totalMember",memberDao.totalMemberCount());
+        // strDate这一日注册的会员数量
+        reportData.put("todayNewMember", memberDao.totalMemberCountByDate(strDate));
+        // strWeekDay这一日注册的会员数量
+        reportData.put("thisWeekNewMember", memberDao.totalMemberCountAfterDate(strWeekDay));
+        // strMonthFirstDay这一日注册的会员数量
+        reportData.put("thisMonthNewMember", memberDao.totalMemberCountAfterDate(strMonthFirstDay));
+        reportData.put("totalMember", memberDao.totalMemberCount());
         // 预约人数相关数据
-        reportData.put("todayOrderNumber",orderDao.totalOrderByDate(strDate));
-        reportData.put("thisWeekOrderNumber",orderDao.totalOrderByAfterDate(strWeekDay));
-        reportData.put("thisMonthOrderNumber",orderDao.totalOrderByAfterDate(strMonthFirstDay));
+        reportData.put("todayOrderNumber", orderDao.totalOrderByDate(strDate));
+        reportData.put("thisWeekOrderNumber", orderDao.totalOrderByAfterDate(strWeekDay));
+        reportData.put("thisMonthOrderNumber", orderDao.totalOrderByAfterDate(strMonthFirstDay));
         // 到诊人数相关数据
-        reportData.put("todayVisitsNumber",orderDao.totalVisitByDate(strDate));
-        reportData.put("thisWeekVisitsNumber",orderDao.totalVisitByAfterDate(strWeekDay));
-        reportData.put("thisMonthVisitsNumber",orderDao.totalVisitByAfterDate(strMonthFirstDay));
+        reportData.put("todayVisitsNumber", orderDao.totalVisitByDate(strDate));
+        reportData.put("thisWeekVisitsNumber", orderDao.totalVisitByAfterDate(strWeekDay));
+        reportData.put("thisMonthVisitsNumber", orderDao.totalVisitByAfterDate(strMonthFirstDay));
         // 套餐热门数据
-        reportData.put("hotSetmeal",orderDao.getHotSetmeal());
+        reportData.put("hotSetmeal", orderDao.getHotSetmeal());
         return reportData;
     }
 

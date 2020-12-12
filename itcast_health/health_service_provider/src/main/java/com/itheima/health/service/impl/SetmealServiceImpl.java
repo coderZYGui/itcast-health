@@ -80,8 +80,6 @@ public class SetmealServiceImpl implements SetmealService {
     @Override
     public List<Map<String, Object>> findSetmealCount() {
 
-        List<Map<String, Object>> mapList = orderDao.findSetmealCount();
-
         /*
         Map<String, Object> map1 = new HashMap<>();
         map1.put("name", "套餐1");
@@ -101,6 +99,6 @@ public class SetmealServiceImpl implements SetmealService {
         mapList.add(map3);
         */
 
-        return mapList;
+        return orderDao.findSetmealCount();
     }
 }
