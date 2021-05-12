@@ -52,7 +52,7 @@
         <poi-ooxml.version>3.14</poi-ooxml.version>
         <aliyun-java-sdk-core.version>3.3.1</aliyun-java-sdk-core.version>
         <aliyun-java-sdk-dysmsapi.version>1.0.0</aliyun-java-sdk-dysmsapi.version>
-        <spring-security-web.version>5.0.5.RELEASE</spring-security-web.version>
+        <spring-security-web.version>5.2.10.RELEASE</spring-security-web.version>
         <spring-security-config.version>5.0.5.RELEASE</spring-security-config.version>
     </properties>
 
