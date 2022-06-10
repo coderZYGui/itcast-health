@@ -37,7 +37,7 @@
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-net.version>3.1</commons-net.version>
         <httpclient.version>4.5.2</httpclient.version>
-        <dubbo.version>2.6.2</dubbo.version>
+        <dubbo.version>2.6.12</dubbo.version>
         <zookeeper.version>3.4.13</zookeeper.version>
         <curator-framework.version>4.0.1</curator-framework.version>
         <jedis.version>2.9.0</jedis.version>
