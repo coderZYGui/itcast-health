@@ -48,7 +48,7 @@
         <quartz.version>2.2.1</quartz.version>
         <quartz-jobs.version>2.2.1</quartz-jobs.version>
         <spring-context-support.version>5.0.5.RELEASE</spring-context-support.version>
-        <poi.version>3.14</poi.version>
+        <poi.version>4.1.1</poi.version>
         <poi-ooxml.version>3.14</poi-ooxml.version>
         <aliyun-java-sdk-core.version>3.3.1</aliyun-java-sdk-core.version>
         <aliyun-java-sdk-dysmsapi.version>1.0.0</aliyun-java-sdk-dysmsapi.version>
